@@ -2,6 +2,7 @@
 
 const fs = require('node:fs').promises;
 const vm = require('node:vm');
+const console = require('./logger.js');
 
 const RUN_OPTIONS = { timeout: 5000, displayErrors: false };
 
