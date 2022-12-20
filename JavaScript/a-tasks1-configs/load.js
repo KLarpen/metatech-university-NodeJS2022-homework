@@ -3,8 +3,7 @@
 const fs = require('node:fs').promises;
 const vm = require('node:vm');
 const console = require('./logger.js');
-
-const RUN_OPTIONS = { timeout: 5000, displayErrors: false };
+const RUN_OPTIONS = require('./config.js').SANDBOX_RUN_OPTIONS;
 
 module.exports = async (filePath, sandbox) => {
   const src = await fs.readFile(filePath, 'utf8');
