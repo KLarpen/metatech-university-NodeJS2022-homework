@@ -28,5 +28,5 @@ module.exports = (routing, port) => {
     });
   });
 
-  console.log(`API on port ${port}`);
+  console.log(`WS API on port ${port}`);
 };

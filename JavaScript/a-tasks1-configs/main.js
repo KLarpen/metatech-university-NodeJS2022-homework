@@ -2,8 +2,8 @@
 
 const fsp = require('node:fs').promises;
 const path = require('node:path');
-const serversConf = require('./config.js').SERVERS;
-const server = require('./ws.js');
+const {SERVERS: serversConf, transport} = require('./config.js');
+const server = require(`./${transport}.js`);
 const staticServer = require('./static.js');
 const load = require('./load.js');
 const db = require('./db.js');
@@ -28,5 +28,5 @@ const routing = {};
   }
 
   staticServer('./static', serversConf.static.port);
-  server(routing, serversConf.ws.port);
+  server(routing, serversConf[transport].port);
 })();

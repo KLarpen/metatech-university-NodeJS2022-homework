@@ -26,10 +26,13 @@ const SANDBOX_RUN_OPTIONS = {
   timeout: 5000,
   displayErrors: false,
 };
+/** Selected network transport for API. Available values: http | ws */
+const transport = 'ws';
 
 module.exports = {
   DB,
   SERVERS,
   HASHING,
   SANDBOX_RUN_OPTIONS,
+  transport,
 };
