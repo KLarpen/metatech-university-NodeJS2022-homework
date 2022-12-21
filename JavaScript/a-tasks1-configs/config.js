@@ -13,7 +13,7 @@ const DB = {
  */
 const SERVERS = {
   static: { port: 8000 },
-  http: { port: 8002 },
+  http: { port: 8001 },
   ws: { port: 8001 },
 };
 /** Crypto module settings for the hashing algorithm */
@@ -27,7 +27,7 @@ const SANDBOX_RUN_OPTIONS = {
   displayErrors: false,
 };
 /** Selected network transport for API. Available values: http | ws */
-const transport = 'ws';
+const transport = 'http';
 
 module.exports = {
   DB,
