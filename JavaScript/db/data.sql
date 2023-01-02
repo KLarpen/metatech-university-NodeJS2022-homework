@@ -11,15 +11,16 @@ INSERT INTO "users" ("login", "password") VALUES
 -- iskandar/zulqarnayn
 
 INSERT INTO "country" ("name") VALUES
-  ('Soviet Union'),
-  ('People''s Republic of China'),
-  ('Vietnam'),
-  ('Cuba');
+  ('Ukraine'),
+  ('Poland'),
+  ('Norway'),
+  ('United Kingdom of Great Britain and Northern Ireland');
 
 INSERT INTO "city" ("name", "country") VALUES
-  ('Beijing', 2),
-  ('Wuhan', 2),
-  ('Kiev', 1),
-  ('Havana', 4),
-  ('Hanoi', 3),
-  ('Kaliningrad', 1);
+  ('Kyiv', 1),
+  ('Dnipro', 1),
+  ('Rzeszów', 2),
+  ('Kraków', 2),
+  ('Nottingham', 4),
+  ('Bergen', 3),
+  ('Kharkiv', 1);
