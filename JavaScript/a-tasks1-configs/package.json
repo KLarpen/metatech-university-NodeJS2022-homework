@@ -1,11 +1,12 @@
 {
-  "name": "grasp-controller",
-  "version": "5.0.0",
-  "description": "GRASP: controller example",
+  "name": "metatech-university-nodejs2022-homework",
+  "version": "1.0.0",
+  "description": "Metatech University homework project by Vladyslav Karpenko (KLarpen). Course NodeJS 2022-2023",
   "license": "MIT",
   "private": true,
   "main": "main.js",
   "dependencies": {
+    "fastify": "^4.10.2",
     "pg": "^8.8.0",
     "ws": "^8.8.1"
   }

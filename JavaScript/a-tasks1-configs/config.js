@@ -15,6 +15,7 @@ const SERVERS = {
   static: { port: 8000 },
   http: { port: 8001 },
   ws: { port: 8001 },
+  fastify: { port: 8001 },
 };
 /** Crypto module settings for the hashing algorithm */
 const HASHING = {
@@ -26,8 +27,13 @@ const SANDBOX_RUN_OPTIONS = {
   timeout: 5000,
   displayErrors: false,
 };
-/** Selected network transport for API. Available values: http | ws */
-const transport = 'http';
+/**
+ * Selected network transport for API. Available values:
+ * - `http` handled by Node's native http module
+ * - `ws`
+ * - `fastify` HTTP handled by Fastify framework
+ */
+const transport = 'fastify';
 
 module.exports = {
   DB,
