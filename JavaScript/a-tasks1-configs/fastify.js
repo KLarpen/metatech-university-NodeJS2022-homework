@@ -53,7 +53,7 @@ module.exports = (routing, port) => {
       const src = serviceHandler.toString();
       const signature = src.substring(0, src.indexOf(')'));
       const isSingularEntity = signature.includes('(id');
-      const hasBodyArgs = signature.includes('{');
+      const hasBodyArgs = signature.includes('{') || signature.includes('(mask');
       if (isSingularEntity) url += '/:id';
       const httpMethod = hasBodyArgs ? 'POST' : 'GET';
 

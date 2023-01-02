@@ -8,7 +8,11 @@ const receiveArgs = async (req) => {
   const buffers = [];
   for await (const chunk of req) buffers.push(chunk);
   const data = Buffer.concat(buffers).toString();
-  return JSON.parse(data);
+  const contentType = req.headers['content-type'];
+  let isJSON = false;
+  if (typeof contentType === 'string')
+    isJSON = contentType.includes('application/json');
+  return isJSON ? JSON.parse(data) : String(data);
 };
 
 const describeOptions = (res) => {
@@ -36,7 +40,8 @@ module.exports = (routing, port) => {
     const signature = src.substring(0, src.indexOf(')'));
     const args = [];
     if (signature.includes('(id')) args.push(id);
-    if (signature.includes('{')) args.push(await receiveArgs(req));
+    if (signature.includes('{') || signature.includes('(mask'))
+      args.push(await receiveArgs(req));
     console.log(`${socket.remoteAddress} ${method} ${url}`);
     const result = await handler(...args);
     // Construct final response

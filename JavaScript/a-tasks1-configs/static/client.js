@@ -14,14 +14,18 @@ const scaffold = (url, structure) => {
    */
   const transportHandlerFactory = {
     http: (serviceName, method) => (...args) => new Promise((resolve, reject) => {
+      let body, isJSON;
       let requestUrl = `${url}${serviceName}/${method}`;
       const pathId = args && args.length > 0 && typeof args[0] === 'number' ? args.shift() : undefined;
       if (pathId !== undefined) requestUrl += `/${pathId}`;
-      const body = args && args.length > 0 && typeof args[0] === 'object' ? JSON.stringify(args[0]) : undefined;
+      if (args && args.length > 0 && args[0]) {
+        isJSON = typeof args[0] === 'object';
+        body = isJSON ? JSON.stringify(args[0]) : args[0];
+      }
       fetch(requestUrl, {
         method: body ? 'POST' : 'GET',
         headers: body ? {
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': `${isJSON ? 'application/json' : 'text/plain'}; charset=UTF-8`,
           'Content-Length': Uint8Array.from(body).byteLength,
         } : undefined,
         body,
