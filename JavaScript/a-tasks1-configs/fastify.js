@@ -54,14 +54,30 @@ module.exports = (routing, port) => {
       const signature = src.substring(0, src.indexOf(')'));
       const isSingularEntity = signature.includes('(id');
       const hasBodyArgs = signature.includes('{') || signature.includes('(mask');
-      if (isSingularEntity) url += '/:id';
       const httpMethod = hasBodyArgs ? 'POST' : 'GET';
 
-      fastify.route({
-        url,
-        method: httpMethod,
-        handler: handlerFactory(serviceHandler, isSingularEntity, hasBodyArgs)
-      });
+      if (isSingularEntity) {
+        // Route for singular entity request
+        fastify.route({
+          url: `${url}/:id`,
+          method: httpMethod,
+          handler: handlerFactory(serviceHandler, isSingularEntity, hasBodyArgs)
+        });
+        if ('read' === method) {
+          // Generic route to read list entities
+          fastify.route({
+            url,
+            method: httpMethod,
+            handler: handlerFactory(serviceHandler, false, hasBodyArgs)
+          });
+        }
+      } else {
+        fastify.route({
+          url,
+          method: httpMethod,
+          handler: handlerFactory(serviceHandler, isSingularEntity, hasBodyArgs)
+        });
+      }
     }
   }
 
