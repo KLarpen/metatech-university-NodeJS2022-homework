@@ -2,7 +2,7 @@
 
 const fs = require('node:fs').promises;
 const vm = require('node:vm');
-const console = require('./logger.js');
+const console = require('./consoleProvider.js');
 const RUN_OPTIONS = require('./config.js').SANDBOX_RUN_OPTIONS;
 
 module.exports = async (filePath, sandbox) => {

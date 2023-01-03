@@ -1,7 +1,7 @@
 'use strict';
 
 const fastify = require('fastify')({ logger: false });
-const console = require('./logger.js');
+const console = require('./consoleProvider.js');
 const clientPort = require('./config.js').SERVERS.static.port;
 
 const describeOptions = function (_, reply) {
@@ -22,13 +22,19 @@ const handlerFactory = function (serviceHandler, isSingularEntity, hasBodyArgs) 
     if (isSingularEntity) args.push(req.params.id);
     if (hasBodyArgs) args.push(req.body);
     console.log(`${req.socket.remoteAddress} ${req.method} ${req.url}`);
-    const result = await serviceHandler(...args);
-    reply
-      .code(200)
-      // CORS header to allow the web client from different port to communicate with API
-      .header('Access-Control-Allow-Origin', `http://127.0.0.1:${clientPort}`);
-    return result.rows;
-    };
+    try {
+      const result = await serviceHandler(...args);
+      reply
+        .code(200)
+        // CORS header to allow the web client from different port to communicate with API
+        .header('Access-Control-Allow-Origin', `http://127.0.0.1:${clientPort}`);
+      return result.rows;
+    } catch (err) {
+      reply.header('Access-Control-Allow-Origin', `http://127.0.0.1:${clientPort}`);
+      console.error(err);
+      throw err;
+    }
+  };
 };
 
 module.exports = (routing, port) => {

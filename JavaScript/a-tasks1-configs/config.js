@@ -34,6 +34,10 @@ const SANDBOX_RUN_OPTIONS = {
  * - `fastify` HTTP handled by Fastify framework
  */
 const transport = 'fastify';
+/** Selected logger service. Available values: `native` | `logger` | `pino` */
+const logger = 'pino';
+/** Path to the folder to store log files in. Relative path allowed. */
+const logDirPath = './log';
 
 module.exports = {
   DB,
@@ -41,4 +45,6 @@ module.exports = {
   HASHING,
   SANDBOX_RUN_OPTIONS,
   transport,
+  logger,
+  logDirPath,
 };

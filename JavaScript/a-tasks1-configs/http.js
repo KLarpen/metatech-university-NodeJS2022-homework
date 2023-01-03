@@ -1,7 +1,7 @@
 'use strict';
 
 const http = require('node:http');
-const console = require('./logger.js');
+const console = require('./consoleProvider.js');
 const clientPort = require('./config.js').SERVERS.static.port;
 
 const receiveArgs = async (req) => {
