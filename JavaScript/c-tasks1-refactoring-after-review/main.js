@@ -5,7 +5,6 @@ const path = require('node:path');
 const {SERVERS: serversConf, transport} = require('./config.js');
 const server = require(`./${transport}.js`);
 const staticServer = require('./static.js');
-const load = require('./load.js');
 const db = require('./db.js');
 const hash = require('./hash.js');
 const logger = require('./consoleProvider.js');
