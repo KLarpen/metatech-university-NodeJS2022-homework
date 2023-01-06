@@ -2,16 +2,23 @@
 
 const fsp = require('node:fs').promises;
 const path = require('node:path');
-const {SERVERS: serversConf, transport} = require('./config.js');
-const server = require(`./transport/${transport}.js`);
+const config = require('./config.js');
+const server = require(`./transport/${config.transport}.js`);
 const staticServer = require('./static.js');
 const db = require('./db.js');
-const hash = require('./hash.js');
-const logger = require('./consoleProvider.js');
+const hash = require('./hash.js')(config.HASHING);
+const logger = require('./consoleProvider.js')({
+  ...config.LOGGER,
+  /** Absolute path to the application root folder to filter out from stack traces */
+  appRootPath: process.cwd()
+});
+
+/** Initialize DB connection */
+db.init(config.DB);
 
 const sandbox = {
   console: Object.freeze(logger),
-  db: Object.freeze(db),
+  db: Object.freeze(db.crud),
   common: { hash },
 };
 const apiPath = path.join(process.cwd(), './api');
@@ -30,6 +37,6 @@ const routing = {};
     logger.log('Service { name: %s, methods: [%s] }', serviceName, Object.keys(routing[serviceName]).join(', '));
   }
 
-  staticServer('./static', serversConf.static.port, sandbox.console);
-  server(routing, serversConf[transport].port, sandbox.console);
+  staticServer('./static', config.SERVERS.static.port, sandbox.console);
+  server(routing, config.SERVERS[config.transport].port, sandbox.console);
 })();

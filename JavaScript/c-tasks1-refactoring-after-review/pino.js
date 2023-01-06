@@ -1,10 +1,9 @@
-const logDirPath = require('./config.js').logDirPath;
 const path = require('node:path');
 const util = require('node:util');
 const pino = require('pino');
 
 class PinoAdapter {
-  constructor(logPath) {
+  constructor(logPath, appRootPath) {
     const date = new Date().toISOString().substring(0, 10);
     const filePath = path.join(logPath, `${date}.log`);
     this.streams = [
@@ -21,7 +20,7 @@ class PinoAdapter {
     }, pino.multistream(this.streams));
 
     // Specific rule to cleanup absolute path from stack trace
-    this.regexp = new RegExp(path.dirname(process.cwd()), 'g');
+    this.regexp = appRootPath ? new RegExp(path.dirname(appRootPath), 'g') : null;
   };
 
   log(...args) {
@@ -44,6 +43,7 @@ class PinoAdapter {
   error(err, ...args) {
     // Remove absolute path part from stack trace
     if (
+      this.regexp !== null &&
       typeof err === 'object' &&
       (err instanceof Error || Object.prototype.toString.call(err) === '[object Error]')
     ) err.stack = err.stack?.replace(this.regexp, '');
@@ -53,4 +53,4 @@ class PinoAdapter {
   fatal(...args) { this.logger.fatal(...args) }
 }
 
-module.exports = new PinoAdapter(logDirPath);
+module.exports = PinoAdapter;

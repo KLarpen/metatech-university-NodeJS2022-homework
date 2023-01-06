@@ -1,11 +1,14 @@
 'use strict';
 
 const pg = require('pg');
-const settings = require('./config.js').DB;
 
-const pool = new pg.Pool(settings);
+let pool = null;
 
-module.exports = (table) => ({
+const init = (options) => {
+  pool =  new pg.Pool(options);
+};
+
+const crud = (table) => ({
   query(sql, args) {
     return pool.query(sql, args);
   },
@@ -52,3 +55,5 @@ module.exports = (table) => ({
     return pool.query(sql, [id]);
   },
 });
+
+module.exports = { init, crud };

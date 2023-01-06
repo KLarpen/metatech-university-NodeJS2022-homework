@@ -2,9 +2,8 @@
 
 const fs = require('node:fs').promises;
 const vm = require('node:vm');
-const RUN_OPTIONS = require('./config.js').SANDBOX_RUN_OPTIONS;
 
-module.exports = async (filePath, sandbox, console) => {
+module.exports = async (filePath, sandbox, { RUN_OPTIONS, console }) => {
   const src = await fs.readFile(filePath, 'utf8');
   const code = `'use strict';\n${src}`;
   const script = new vm.Script(code, { filename: filePath, lineOffset: -1 });

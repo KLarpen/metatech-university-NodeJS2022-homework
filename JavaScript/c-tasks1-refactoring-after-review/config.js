@@ -17,6 +17,20 @@ const SERVERS = {
   ws: { port: 8001 },
   fastify: { port: 8001 },
 };
+/**
+ * Selected network transport for API. Available values:
+ * - `http` handled by Node's native http module
+ * - `ws`
+ * - `fastify` HTTP handled by Fastify framework
+ */
+const transport = 'fastify';
+/** Logger service settings */
+const LOGGER = {
+  /** Selected logger service. Available values: `native` | `logger` | `pino` */
+  serviceKey: 'logger',
+  /** Path to the folder to store log files in. Relative path allowed. */
+  logPath: './log',
+};
 /** Crypto module settings for the hashing algorithm */
 const HASHING = {
   saltLength: 16,
@@ -27,24 +41,12 @@ const SANDBOX_RUN_OPTIONS = {
   timeout: 5000,
   displayErrors: false,
 };
-/**
- * Selected network transport for API. Available values:
- * - `http` handled by Node's native http module
- * - `ws`
- * - `fastify` HTTP handled by Fastify framework
- */
-const transport = 'fastify';
-/** Selected logger service. Available values: `native` | `logger` | `pino` */
-const logger = 'pino';
-/** Path to the folder to store log files in. Relative path allowed. */
-const logDirPath = './log';
 
 module.exports = {
   DB,
   SERVERS,
+  transport,
+  LOGGER,
   HASHING,
   SANDBOX_RUN_OPTIONS,
-  transport,
-  logger,
-  logDirPath,
 };

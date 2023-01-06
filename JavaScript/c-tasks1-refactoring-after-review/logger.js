@@ -3,7 +3,6 @@
 const fs = require('node:fs');
 const util = require('node:util');
 const path = require('node:path');
-const logDirPath = require('./config').logDirPath;
 
 const COLORS = {
   info: '\x1b[1;37m',
@@ -16,12 +15,12 @@ const COLORS = {
 const DATETIME_LENGTH = 19;
 
 class Logger {
-  constructor(logPath) {
+  constructor(logPath, appRootPath) {
     this.path = logPath;
     const date = new Date().toISOString().substring(0, 10);
     const filePath = path.join(logPath, `${date}.log`);
     this.stream = fs.createWriteStream(filePath, { flags: 'a' });
-    this.regexp = new RegExp(path.dirname(process.cwd()), 'g');
+    this.regexp = appRootPath ? new RegExp(path.dirname(appRootPath), 'g') : null;
   }
 
   close() {
@@ -55,7 +54,10 @@ class Logger {
 
   error(...args) {
     const msg = util.format(...args).replace(/[\n\r]{2,}/g, '\n');
-    this.write('error', msg.replace(this.regexp, ''));
+    this.write('error', this.regexp !== null
+      ? msg.replace(this.regexp, '')
+      : msg
+    );
   }
 
   system(...args) {
@@ -69,4 +71,4 @@ class Logger {
   }
 }
 
-module.exports = new Logger(logDirPath);
+module.exports = Logger;
