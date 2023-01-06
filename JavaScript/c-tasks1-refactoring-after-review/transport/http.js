@@ -1,7 +1,6 @@
 'use strict';
 
 const http = require('node:http');
-const clientPort = require('../config.js').SERVERS.static.port;
 
 const receiveArgs = async (req) => {
   const buffers = [];
@@ -14,18 +13,24 @@ const receiveArgs = async (req) => {
   return isJSON ? JSON.parse(data) : String(data);
 };
 
-const describeOptions = (res) => {
-  res.statusCode = 204;
-  res.setHeader('Access-Control-Allow-Origin', `http://127.0.0.1:${clientPort}`);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Content-Length');
-  res.setHeader('Access-Control-Max-Age', 60); // 1 min of options caching
-  return res.end();
-};
+module.exports = (routing, port, { console, allowedClientOrigins }) => {
 
-module.exports = (routing, port, console) => {
+  const describeOptions = (res) => {
+    res.statusCode = 204;
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Content-Length');
+    res.setHeader('Access-Control-Max-Age', 60); // 1 min of options caching
+    return res.end();
+  };
+
   http.createServer(async (req, res) => {
     const { url, socket, method: httpMethod } = req;
+     // CORS header to allow the web client from different port to communicate with API
+     const originAllowed = allowedClientOrigins.some(item => req.headers.origin === `http://${item.host}:${item.port}`);
+     res.setHeader(
+       'Access-Control-Allow-Origin',
+       originAllowed ? req.headers.origin : 'http://127.0.0.1'
+     );
     // Resolve API request handler
     const [name, method, id] = url.substring(1).split('/');
     const entity = routing[name];
@@ -48,8 +53,6 @@ module.exports = (routing, port, console) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json; charset=UTF-8');
     res.setHeader('Content-Length', Buffer.byteLength(resultBody));
-    // CORS header to allow the web client from different port to communicate with API
-    res.setHeader('Access-Control-Allow-Origin', `http://127.0.0.1:${clientPort}`)
     res.end(resultBody);
   }).listen(port);
 

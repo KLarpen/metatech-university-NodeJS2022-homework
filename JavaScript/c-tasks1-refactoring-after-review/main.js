@@ -38,5 +38,8 @@ const routing = {};
   }
 
   staticServer('./static', config.SERVERS.static.port, sandbox.console);
-  server(routing, config.SERVERS[config.transport].port, sandbox.console);
+  server(routing, config.SERVERS[config.transport].port, {
+    console: sandbox.console,
+    allowedClientOrigins: [config.SERVERS.static]
+  });
 })();

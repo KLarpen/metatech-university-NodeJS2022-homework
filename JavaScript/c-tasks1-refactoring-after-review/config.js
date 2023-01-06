@@ -12,7 +12,7 @@ const DB = {
  * Configuration of the network servers by supported types
  */
 const SERVERS = {
-  static: { port: 8000 },
+  static: { host: '127.0.0.1', port: 8000 },
   http: { port: 8001 },
   ws: { port: 8001 },
   fastify: { port: 8001 },

@@ -1,14 +1,15 @@
 'use strict';
 
 const fastify = require('fastify')({ logger: false });
-const clientPort = require('../config.js').SERVERS.static.port;
 
-module.exports = (routing, port, console) => {
-  const describeOptions = function (_, reply) {
+module.exports = (routing, port, { console, allowedClientOrigins }) => {
+
+  const describeOptions = function (req, reply) {
+    const originAllowed = allowedClientOrigins.some(item => req.headers.origin === `http://${item.host}:${item.port}`);
     reply
       .code(204)
       .headers({
-        'Access-Control-Allow-Origin': `http://127.0.0.1:${clientPort}`,
+        'Access-Control-Allow-Origin': originAllowed ? req.headers.origin : 'http://127.0.0.1',
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Content-Length',
         'Access-Control-Max-Age': 60, // 1 min of options caching
@@ -22,15 +23,17 @@ module.exports = (routing, port, console) => {
       if (isSingularEntity) args.push(req.params.id);
       if (hasBodyArgs) args.push(req.body);
       console.log(`${req.socket.remoteAddress} ${req.method} ${req.url}`);
+      // CORS header to allow the web client from different port to communicate with API
+      const originAllowed = allowedClientOrigins.some(item => req.headers.origin === `http://${item.host}:${item.port}`);
+      reply.header(
+        'Access-Control-Allow-Origin',
+        originAllowed ? req.headers.origin : 'http://127.0.0.1'
+      );
       try {
         const result = await serviceHandler(...args);
-        reply
-          .code(200)
-          // CORS header to allow the web client from different port to communicate with API
-          .header('Access-Control-Allow-Origin', `http://127.0.0.1:${clientPort}`);
+        reply.code(200);
         return result.rows;
       } catch (err) {
-        reply.header('Access-Control-Allow-Origin', `http://127.0.0.1:${clientPort}`);
         console.error(err);
         throw err;
       }
