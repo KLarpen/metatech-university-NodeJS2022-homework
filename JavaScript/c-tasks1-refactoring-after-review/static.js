@@ -3,9 +3,8 @@
 const http = require('node:http');
 const path = require('node:path');
 const fs = require('node:fs');
-const console = require('./consoleProvider.js');
 
-module.exports = (root, port) => {
+module.exports = (root, port, console) => {
   http.createServer(async (req, res) => {
     const url = req.url === '/' ? '/index.html' : req.url;
     const filePath = path.join(root, url);

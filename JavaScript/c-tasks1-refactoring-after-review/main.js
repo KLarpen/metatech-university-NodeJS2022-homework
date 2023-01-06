@@ -30,6 +30,6 @@ const routing = {};
     logger.log('Service { name: %s, methods: [%s] }', serviceName, Object.keys(routing[serviceName]).join(', '));
   }
 
-  staticServer('./static', serversConf.static.port);
-  server(routing, serversConf[transport].port);
+  staticServer('./static', serversConf.static.port, sandbox.console);
+  server(routing, serversConf[transport].port, sandbox.console);
 })();

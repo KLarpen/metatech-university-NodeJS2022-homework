@@ -1,7 +1,6 @@
 'use strict';
 
 const http = require('node:http');
-const console = require('../consoleProvider.js');
 const clientPort = require('../config.js').SERVERS.static.port;
 
 const receiveArgs = async (req) => {
@@ -24,7 +23,7 @@ const describeOptions = (res) => {
   return res.end();
 };
 
-module.exports = (routing, port) => {
+module.exports = (routing, port, console) => {
   http.createServer(async (req, res) => {
     const { url, socket, method: httpMethod } = req;
     // Resolve API request handler

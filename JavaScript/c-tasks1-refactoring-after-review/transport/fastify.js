@@ -1,43 +1,42 @@
 'use strict';
 
 const fastify = require('fastify')({ logger: false });
-const console = require('../consoleProvider.js');
 const clientPort = require('../config.js').SERVERS.static.port;
 
-const describeOptions = function (_, reply) {
-  reply
-    .code(204)
-    .headers({
-      'Access-Control-Allow-Origin': `http://127.0.0.1:${clientPort}`,
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Content-Length',
-      'Access-Control-Max-Age': 60, // 1 min of options caching
-    })
-    .send();
-};
-
-const handlerFactory = function (serviceHandler, isSingularEntity, hasBodyArgs) {
-  return async function (req, reply) {
-    const args = [];
-    if (isSingularEntity) args.push(req.params.id);
-    if (hasBodyArgs) args.push(req.body);
-    console.log(`${req.socket.remoteAddress} ${req.method} ${req.url}`);
-    try {
-      const result = await serviceHandler(...args);
-      reply
-        .code(200)
-        // CORS header to allow the web client from different port to communicate with API
-        .header('Access-Control-Allow-Origin', `http://127.0.0.1:${clientPort}`);
-      return result.rows;
-    } catch (err) {
-      reply.header('Access-Control-Allow-Origin', `http://127.0.0.1:${clientPort}`);
-      console.error(err);
-      throw err;
-    }
+module.exports = (routing, port, console) => {
+  const describeOptions = function (_, reply) {
+    reply
+      .code(204)
+      .headers({
+        'Access-Control-Allow-Origin': `http://127.0.0.1:${clientPort}`,
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Content-Length',
+        'Access-Control-Max-Age': 60, // 1 min of options caching
+      })
+      .send();
   };
-};
 
-module.exports = (routing, port) => {
+  const handlerFactory = function (serviceHandler, isSingularEntity, hasBodyArgs) {
+    return async function (req, reply) {
+      const args = [];
+      if (isSingularEntity) args.push(req.params.id);
+      if (hasBodyArgs) args.push(req.body);
+      console.log(`${req.socket.remoteAddress} ${req.method} ${req.url}`);
+      try {
+        const result = await serviceHandler(...args);
+        reply
+          .code(200)
+          // CORS header to allow the web client from different port to communicate with API
+          .header('Access-Control-Allow-Origin', `http://127.0.0.1:${clientPort}`);
+        return result.rows;
+      } catch (err) {
+        reply.header('Access-Control-Allow-Origin', `http://127.0.0.1:${clientPort}`);
+        console.error(err);
+        throw err;
+      }
+    };
+  };
+
   // Handle OPTIONS preflight request
   fastify.route({
     method: 'OPTIONS',
