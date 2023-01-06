@@ -9,19 +9,21 @@ module.exports = (routing, port, { console, allowedClientOrigins }) => {
     reply
       .code(204)
       .headers({
+        'X-XSS-Protection': '1; mode=block',
+        'X-Content-Type-Options': 'nosniff',
+        'Strict-Transport-Security': 'max-age=31536000; includeSubdomains; preload',
         'Access-Control-Allow-Origin': originAllowed ? req.headers.origin : 'http://127.0.0.1',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Content-Length',
         'Access-Control-Max-Age': 60, // 1 min of options caching
+        'Content-Type': 'application/json; charset=UTF-8',
       })
       .send();
   };
 
-  const handlerFactory = function (serviceHandler, isSingularEntity, hasBodyArgs) {
+  const handlerFactory = function (serviceHandler) {
     return async function (req, reply) {
-      const args = [];
-      if (isSingularEntity) args.push(req.params.id);
-      if (hasBodyArgs) args.push(req.body);
+      const { args } = req.body;
       console.log(`${req.socket.remoteAddress} ${req.method} ${req.url}`);
       // CORS header to allow the web client from different port to communicate with API
       const originAllowed = allowedClientOrigins.some(item => req.headers.origin === `http://${item.host}:${item.port}`);
@@ -43,7 +45,7 @@ module.exports = (routing, port, { console, allowedClientOrigins }) => {
   // Handle OPTIONS preflight request
   fastify.route({
     method: 'OPTIONS',
-    url: '/*',
+    url: '/api/*',
     handler: describeOptions,
   });
 
@@ -56,36 +58,13 @@ module.exports = (routing, port, { console, allowedClientOrigins }) => {
       // Do not expose restricted internal service methods, e.g. `query`
       if ('query' === method) continue;
 
-      let url = `/${name}/${method}`;
+      let url = `/api/${name}/${method}`;
       const serviceHandler = entity[method];
-      const src = serviceHandler.toString();
-      const signature = src.substring(0, src.indexOf(')'));
-      const isSingularEntity = signature.includes('(id');
-      const hasBodyArgs = signature.includes('{') || signature.includes('(mask');
-      const httpMethod = hasBodyArgs ? 'POST' : 'GET';
-
-      if (isSingularEntity) {
-        // Route for singular entity request
-        fastify.route({
-          url: `${url}/:id`,
-          method: httpMethod,
-          handler: handlerFactory(serviceHandler, isSingularEntity, hasBodyArgs)
-        });
-        if ('read' === method) {
-          // Generic route to read list entities
-          fastify.route({
-            url,
-            method: httpMethod,
-            handler: handlerFactory(serviceHandler, false, hasBodyArgs)
-          });
-        }
-      } else {
-        fastify.route({
-          url,
-          method: httpMethod,
-          handler: handlerFactory(serviceHandler, isSingularEntity, hasBodyArgs)
-        });
-      }
+      fastify.route({
+        url,
+        method: 'POST',
+        handler: handlerFactory(serviceHandler)
+      });
     }
   }
 

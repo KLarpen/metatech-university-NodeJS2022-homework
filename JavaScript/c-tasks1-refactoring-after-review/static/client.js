@@ -14,27 +14,19 @@ const scaffold = (url, structure) => {
    */
   const transportHandlerFactory = {
     http: (serviceName, method) => (...args) => new Promise((resolve, reject) => {
-      let body, isJSON;
-      let requestUrl = `${url}${serviceName}/${method}`;
-      const pathId = args && args.length > 0 && typeof args[0] === 'number' ? args.shift() : undefined;
-      if (pathId !== undefined) requestUrl += `/${pathId}`;
-      if (args && args.length > 0 && args[0]) {
-        isJSON = typeof args[0] === 'object';
-        body = isJSON ? JSON.stringify(args[0]) : args[0];
-      }
-      fetch(requestUrl, {
-        method: body ? 'POST' : 'GET',
-        headers: body ? {
-          'Content-Type': `${isJSON ? 'application/json' : 'text/plain'}; charset=UTF-8`,
+      const body = JSON.stringify({ args });
+      fetch(`${url}/api/${serviceName}/${method}`, {
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json; charset=UTF-8',
           'Content-Length': Uint8Array.from(body).byteLength,
-        } : undefined,
+        },
         body,
       }).then(res => {
-        if (!res.ok || res.status !== 200) {
-          reject(new Error(`Status Code: ${res.status} ${res.statusText} (type: ${res.type})`));
-          return;
-        }
-        resolve(res.json());
+        if (res.ok && res.status === 200) resolve(res.json());
+        else reject(new Error(
+          `Status Code: ${res.status} ${res.statusText} (type: ${res.type})`
+        ));
       }).catch(reject);
     }),
     ws: (serviceName, method, ws) => (...args) => new Promise((resolve) => {
@@ -60,7 +52,11 @@ const scaffold = (url, structure) => {
       const service = structure[serviceName];
       const methods = Object.keys(service);
       for (const methodName of methods) {
-        api[serviceName][methodName] = transportHandlerFactory[transport](serviceName, methodName, networkClient);
+        api[serviceName][methodName] = transportHandlerFactory[transport](
+          serviceName,
+          methodName,
+          networkClient
+        );
       }
     }
   };
@@ -74,7 +70,7 @@ const scaffold = (url, structure) => {
   return api;
 };
 
-const api = scaffold('http://127.0.0.1:8001/', {
+const api = scaffold('http://127.0.0.1:8001', {
   user: {
     create: ['record'],
     read: ['id'],
