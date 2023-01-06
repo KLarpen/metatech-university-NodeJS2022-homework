@@ -23,11 +23,11 @@ const SERVERS = {
  * - `ws`
  * - `fastify` HTTP handled by Fastify framework
  */
-const transport = 'fastify';
+const transport = 'http';
 /** Logger service settings */
 const LOGGER = {
-  /** Selected logger service. Available values: `native` | `logger` | `pino` */
-  serviceKey: 'logger',
+  /** Selected logger service. Available values: `native` | `custom` | `pino` */
+  serviceKey: 'custom',
   /** Path to the folder to store log files in. Relative path allowed. */
   logPath: './log',
 };

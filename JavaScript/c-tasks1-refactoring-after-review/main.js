@@ -7,7 +7,7 @@ const server = require(`./transport/${config.transport}.js`);
 const staticServer = require('./static.js');
 const db = require('./db.js');
 const hash = require('./hash.js')(config.HASHING);
-const logger = require('./consoleProvider.js')({
+const logger = require('./logger/provider.js')({
   ...config.LOGGER,
   /** Absolute path to the application root folder to filter out from stack traces */
   appRootPath: process.cwd()
