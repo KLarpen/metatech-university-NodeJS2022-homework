@@ -1,36 +1,22 @@
 'use strict';
 
 const fastify = require('fastify')({ logger: false });
+const cors = require('@fastify/cors');
 
 module.exports = (routing, port, { console, allowedClientOrigins }) => {
 
-  const describeOptions = function (req, reply) {
-    const originAllowed = allowedClientOrigins.some(item => req.headers.origin === `http://${item.host}:${item.port}`);
-    reply
-      .code(204)
-      .headers({
-        'X-XSS-Protection': '1; mode=block',
-        'X-Content-Type-Options': 'nosniff',
-        'Strict-Transport-Security': 'max-age=31536000; includeSubdomains; preload',
-        'Access-Control-Allow-Origin': originAllowed ? req.headers.origin : 'http://127.0.0.1',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Content-Length',
-        'Access-Control-Max-Age': 60, // 1 min of options caching
-        'Content-Type': 'application/json; charset=UTF-8',
-      })
-      .send();
-  };
+  // Handle CORS headers & OPTIONS preflight requests (the route will be registered by plugin)
+  fastify.register(cors, {
+    origin: allowedClientOrigins.map(item => `http://${item.host}:${item.port}`),
+    methods: 'POST,OPTIONS',
+    allowedHeaders: 'Content-Type,Content-Length',
+    maxAge: 60, // 1 min of options caching
+  });
 
   const handlerFactory = function (serviceHandler) {
     return async function (req, reply) {
       const { args } = req.body;
       console.log(`${req.socket.remoteAddress} ${req.method} ${req.url}`);
-      // CORS header to allow the web client from different port to communicate with API
-      const originAllowed = allowedClientOrigins.some(item => req.headers.origin === `http://${item.host}:${item.port}`);
-      reply.header(
-        'Access-Control-Allow-Origin',
-        originAllowed ? req.headers.origin : 'http://127.0.0.1'
-      );
       try {
         const result = await serviceHandler(...args);
         reply.code(200);
@@ -41,13 +27,6 @@ module.exports = (routing, port, { console, allowedClientOrigins }) => {
       }
     };
   };
-
-  // Handle OPTIONS preflight request
-  fastify.route({
-    method: 'OPTIONS',
-    url: '/api/*',
-    handler: describeOptions,
-  });
 
   // Scaffold API services structure on Fastify's routes
   const serviceNames = Object.keys(routing);
