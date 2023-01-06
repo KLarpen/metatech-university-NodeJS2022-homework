@@ -34,7 +34,7 @@ module.exports = (routing, port, { console, allowedClientOrigins }) => {
       try {
         const result = await serviceHandler(...args);
         reply.code(200);
-        return result.rows;
+        return result;
       } catch (err) {
         console.error(err);
         throw err;

@@ -50,7 +50,7 @@ module.exports = (routing, port, { console, allowedClientOrigins }) => {
     console.log(`${socket.remoteAddress} ${method} ${url}`);
     try {
       const result = await handler(...args);
-      resultBody = JSON.stringify(result.rows);
+      resultBody = JSON.stringify(result);
     } catch (err) {
       console.error(err);
       resultBody = JSON.stringify([{
