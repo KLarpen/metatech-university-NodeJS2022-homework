@@ -1,6 +1,6 @@
 'use strict';
 
-const console = require('./consoleProvider.js');
+const console = require('../consoleProvider.js');
 const { Server } = require('ws');
 
 module.exports = (routing, port) => {

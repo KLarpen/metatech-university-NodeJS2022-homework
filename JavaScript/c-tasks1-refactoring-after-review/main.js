@@ -3,7 +3,7 @@
 const fsp = require('node:fs').promises;
 const path = require('node:path');
 const {SERVERS: serversConf, transport} = require('./config.js');
-const server = require(`./${transport}.js`);
+const server = require(`./transport/${transport}.js`);
 const staticServer = require('./static.js');
 const db = require('./db.js');
 const hash = require('./hash.js');

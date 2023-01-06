@@ -1,8 +1,8 @@
 'use strict';
 
 const fastify = require('fastify')({ logger: false });
-const console = require('./consoleProvider.js');
-const clientPort = require('./config.js').SERVERS.static.port;
+const console = require('../consoleProvider.js');
+const clientPort = require('../config.js').SERVERS.static.port;
 
 const describeOptions = function (_, reply) {
   reply
