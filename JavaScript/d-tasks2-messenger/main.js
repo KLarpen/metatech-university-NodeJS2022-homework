@@ -6,7 +6,7 @@ const config = require('./config.js');
 const load = require('./load.js')(config.SANDBOX_RUN_OPTIONS);
 const server = require(`./transport/${config.transport}.js`);
 const staticServer = require('./static.js');
-const db = require('./db.js');
+const db = require('./db.js')(config.DB);
 const hash = require('./hash.js')(config.HASHING);
 const logger = require('./logger/provider.js')({
   ...config.LOGGER,
@@ -14,12 +14,9 @@ const logger = require('./logger/provider.js')({
   appRootPath: process.cwd()
 });
 
-/** Initialize DB connection */
-db.init(config.DB);
-
 const sandbox = {
   console: Object.freeze(logger),
-  db: Object.freeze(db.crud),
+  db: Object.freeze(db),
   common: { hash },
 };
 const apiPath = path.join(process.cwd(), './api');
