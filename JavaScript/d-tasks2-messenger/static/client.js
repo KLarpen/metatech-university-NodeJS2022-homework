@@ -71,16 +71,17 @@ const scaffold = (url, structure) => {
 };
 
 const api = scaffold('http://127.0.0.1:8001', {
-  user: {
-    create: ['record'],
-    read: ['id'],
-    update: ['id', 'record'],
-    delete: ['id'],
-    find: ['mask'],
+  auth: {
+    signin: ['login', 'password'],
+    signout: [],
+    restore: ['token'],
   },
-  country: {
-    read: ['id'],
-    delete: ['id'],
-    find: ['mask'],
+  messenger: {
+    method: ['arg'],
   },
 });
+
+(async () => {
+  const data = await api.auth.signin('marcus', 'marcus');
+  console.dir({ data });
+})();
