@@ -20,13 +20,12 @@ const SERVERS = {
 /**
  * Selected network transport for API. Available values:
  * - `http` handled by Node's native http module
- * - `ws`
- * - `fastify` HTTP handled by Fastify framework
+ * - `ws` WebSocket handled by `WS` package
  */
 const transport = 'http';
 /** Logger service settings */
 const LOGGER = {
-  /** Selected logger service. Available values: `native` | `custom` | `pino` */
+  /** Selected logger service. Available values: `native` | `custom` */
   serviceKey: 'custom',
   /** Path to the folder to store log files in. Relative path allowed. */
   logPath: './log',
