@@ -3,6 +3,7 @@
 const fsp = require('node:fs').promises;
 const path = require('node:path');
 const config = require('./config.js');
+const load = require('./load.js')(config.SANDBOX_RUN_OPTIONS);
 const server = require(`./transport/${config.transport}.js`);
 const staticServer = require('./static.js');
 const db = require('./db.js');
@@ -27,13 +28,10 @@ const routing = {};
 (async () => {
   const files = await fsp.readdir(apiPath);
   for (const fileName of files) {
-    if (!fileName.endsWith('.mjs')) continue;
+    if (!fileName.endsWith('.js')) continue;
     const filePath = path.join(apiPath, fileName);
-    const serviceName = path.basename(fileName, '.mjs');
-    const {
-      default: serviceDIContainer
-    } = await import(filePath);
-    routing[serviceName] = await serviceDIContainer(Object.freeze({ ...sandbox}));
+    const serviceName = path.basename(fileName, '.js');
+    routing[serviceName] = await load(filePath, Object.freeze({ ...sandbox}));
     logger.log('Service { name: %s, methods: [%s] }', serviceName, Object.keys(routing[serviceName]).join(', '));
   }
 
