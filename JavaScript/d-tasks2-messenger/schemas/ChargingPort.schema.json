@@ -1,0 +1,19 @@
+{
+  "$id": "https://klarpen.com/schemas/ChargingPort.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChargingPort",
+  "description": "A specific charging port at charger station",
+  "type": "object",
+  "properties": {
+    "chargingPortId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "available": { "type": "boolean" },
+    "cost": { "type": "number" },
+    "type": { "$ref": "https://klarpen.com/schemas/PortType.schema.json" },
+    "power": { "type": "number" }
+  },
+  "additionalProperties": false,
+  "required": ["chargingPortId", "available", "cost", "type", "power"]
+}

@@ -1,0 +1,47 @@
+{
+  "$id": "https://klarpen.com/schemas/Rent.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Rent",
+  "description": "Renting of the parking lot for single electric vehicle",
+  "type": "object",
+  "properties": {
+    "rentId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "spotId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "chargingPortId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "clientId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "spot": { "$ref": "https://klarpen.com/schemas/Spot.schema.json" },
+    "chargingPort": { "$ref": "https://klarpen.com/schemas/ChargingPort.schema.json" },
+    "client": { "$ref": "https://klarpen.com/schemas/Client.schema.json" },
+    "started": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ended": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "freezedCostRates": {
+      "type": "object",
+      "properties": {
+        "spot": { "type": "number" },
+        "port": { "type": "number" }
+      },
+      "required": ["spot", "port"]
+    },
+    "totalPrice": { "type": "number" }
+  },
+  "additionalProperties": false,
+  "required": ["rentId", "spotId", "chargingPortId", "clientId", "started", "freezedCostRates"]
+}

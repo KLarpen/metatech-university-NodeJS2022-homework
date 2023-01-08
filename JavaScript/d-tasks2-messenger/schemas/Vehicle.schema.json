@@ -1,0 +1,18 @@
+{
+  "$id": "https://klarpen.com/schemas/Vehicle.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Vehicle",
+  "description": "An electric vehicle",
+  "type": "object",
+  "properties": {
+    "vehicleId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "model": { "type": "string" },
+    "kind": { "$ref": "https://klarpen.com/schemas/VehicleKind.schema.json" },
+    "portType": { "$ref": "https://klarpen.com/schemas/PortType.schema.json" }
+  },
+  "additionalProperties": false,
+  "required": ["vehicleId", "model", "kind", "portType"]
+}

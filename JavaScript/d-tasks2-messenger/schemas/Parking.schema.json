@@ -1,0 +1,39 @@
+{
+  "$id": "https://klarpen.com/schemas/Parking.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Parking",
+  "description": "A parking for electric vehicles",
+  "type": "object",
+  "properties": {
+    "parkingId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "name": { "type": "string" },
+    "address": { "$ref": "#/$defs/address" },
+    "location": { "$ref": "https://klarpen.com/schemas/Location.schema.json" },
+    "spots": {
+      "type": "array",
+      "items": { "$ref": "https://klarpen.com/schemas/Spot.schema.json" }
+    },
+    "chargers": {
+      "type": "array",
+      "items": { "$ref": "https://klarpen.com/schemas/ElectricCharger.schema.json" }
+    }
+  },
+  "additionalProperties": false,
+  "required": ["parkingId", "name", "address", "location", "spots", "chargers"],
+  "$defs": {
+    "address": {
+      "type": "object",
+      "properties": {
+        "country": { "type": "string" },
+        "state": { "type": "string" },
+        "city": { "type": "string" },
+        "streetAddress": { "type": "string" }
+      },
+      "additionalProperties": false,
+      "required": ["country", "city", "streetAddress"]
+    }
+  }
+}

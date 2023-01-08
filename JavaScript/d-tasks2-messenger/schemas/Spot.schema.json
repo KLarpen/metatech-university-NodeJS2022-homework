@@ -1,0 +1,31 @@
+{
+  "$id": "https://klarpen.com/schemas/Spot.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Spot",
+  "description": "A parking spot for single electric vehicle",
+  "type": "object",
+  "properties": {
+    "spotId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "floor": { "type": "integer" },
+    "place": { "type": "integer" },
+    "available": { "type": "boolean" },
+    "cost": { "type": "number" },
+    "suitableFor": {
+      "type": "array",
+      "items": { "$ref": "https://klarpen.com/schemas/VehicleKind.schema.json" }
+    },
+    "chargers": {
+      "type": "array",
+      "items": { "$ref": "https://klarpen.com/schemas/ElectricCharger.schema.json" }
+    },
+    "ports": {
+      "type": "array",
+      "items": { "$ref": "https://klarpen.com/schemas/ChargingPort.schema.json" }
+    }
+  },
+  "additionalProperties": false,
+  "required": ["spotId", "floor", "place", "cost", "suitableFor", "chargers", "ports"]
+}

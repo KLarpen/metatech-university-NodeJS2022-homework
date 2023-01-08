@@ -1,0 +1,13 @@
+{
+  "$id": "https://klarpen.com/schemas/Role.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Role",
+  "description": "A role of the user account",
+  "type": "object",
+  "properties": {
+    "roleId": { "type": "integer" },
+    "name": { "type": "string" }
+  },
+  "additionalProperties": false,
+  "required": ["roleId", "name"]
+}

@@ -1,0 +1,23 @@
+{
+  "$id": "https://klarpen.com/schemas/Area.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Area",
+  "description": "An area of a messenger chat",
+  "type": "object",
+  "properties": {
+    "areaId": { "type": "integer" },
+    "name": { "type": "string" },
+    "ownerId": { "type": "integer" },
+    "owner": {
+      "$ref": "https://klarpen.com/schemas/Account.schema.json"
+    },
+    "members": {
+      "type": "array",
+      "items": {
+        "$ref": "https://klarpen.com/schemas/Account.schema.json"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": ["areaId", "name", "ownerId"]
+}

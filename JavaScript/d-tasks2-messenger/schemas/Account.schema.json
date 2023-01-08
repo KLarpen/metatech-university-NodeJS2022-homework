@@ -1,0 +1,28 @@
+{
+  "$id": "https://klarpen.com/schemas/Account.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Account",
+  "description": "A user account of the application",
+  "type": "object",
+  "properties": {
+    "accountId": { "type": "integer" },
+    "login": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 64
+    },
+    "password": {
+      "description": "Password hash",
+      "type": "string"
+    },
+    "roles": {
+      "description": "Roles assigned to account",
+      "type": "array",
+      "items": {
+        "$ref": "https://klarpen.com/schemas/Role.schema.json"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": ["accountId", "login", "password"]
+}

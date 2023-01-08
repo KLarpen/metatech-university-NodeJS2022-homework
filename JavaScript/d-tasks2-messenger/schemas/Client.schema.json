@@ -1,0 +1,37 @@
+{
+  "$id": "https://klarpen.com/schemas/Client.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Client",
+  "description": "Client of the parking network",
+  "type": "object",
+  "properties": {
+    "clientId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "accountId": { "type": "integer" },
+    "firstName": { "type": "string" },
+    "lastName": { "type": "string" },
+    "phones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "vehicle": { "$ref": "https://klarpen.com/schemas/Vehicle.schema.json" },
+    "billingSettings": {
+      "type": "array",
+      "items": { "$ref": "https://klarpen.com/schemas/BillingSettings.schema.json" }
+    }
+  },
+  "additionalProperties": false,
+  "required": ["clientId", "accountId", "firstName", "lastName", "vehicle"]
+}

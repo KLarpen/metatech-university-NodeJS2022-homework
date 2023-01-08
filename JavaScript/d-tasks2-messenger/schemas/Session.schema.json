@@ -1,0 +1,25 @@
+{
+  "$id": "https://klarpen.com/schemas/Session.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Session",
+  "description": "A user session descriptor",
+  "type": "object",
+  "properties": {
+    "sessionId": { "type": "integer" },
+    "accountId": { "type": "integer" },
+    "account": {
+      "$ref": "https://klarpen.com/schemas/Account.schema.json"
+    },
+    "token": { "type": "string" },
+    "ip": {
+      "type": "string",
+      "format": "ipv4"
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false,
+  "required": ["sessionId", "accountId", "token", "ip", "data"]
+}
