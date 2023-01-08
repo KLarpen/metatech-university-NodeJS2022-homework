@@ -16,7 +16,8 @@
     "cardNo": {
       "type": "string",
       "pattern": "^([0-9]{4})-([0-9]{4})-([0-9]{4})-([0-9]{4})$"
-    }
+    },
+    "main": {  "type": "boolean" }
   },
   "additionalProperties": false,
   "required": ["billingSettingsId", "clientId", "cardNo"]

@@ -22,7 +22,7 @@
     }
   },
   "additionalProperties": false,
-  "required": ["parkingId", "name", "address", "location", "spots", "chargers"],
+  "required": ["parkingId", "name", "address", "location", "spots"],
   "$defs": {
     "address": {
       "type": "object",

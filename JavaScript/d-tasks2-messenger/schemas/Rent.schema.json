@@ -28,7 +28,7 @@
       "type": "string",
       "format": "date-time"
     },
-    "ended": {
+    "finished": {
       "type": "string",
       "format": "date-time"
     },

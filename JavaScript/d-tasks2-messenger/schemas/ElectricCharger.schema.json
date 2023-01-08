@@ -13,6 +13,10 @@
     "ports": {
       "type": "array",
       "items": { "$ref": "https://klarpen.com/schemas/ChargingPort.schema.json" }
+    },
+    "parkingId": {
+      "type": "string",
+      "format": "uuid"
     }
   },
   "additionalProperties": false,

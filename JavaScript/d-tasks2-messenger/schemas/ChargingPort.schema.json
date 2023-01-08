@@ -12,7 +12,11 @@
     "available": { "type": "boolean" },
     "cost": { "type": "number" },
     "type": { "$ref": "https://klarpen.com/schemas/PortType.schema.json" },
-    "power": { "type": "number" }
+    "power": { "type": "number" },
+    "electricChargerId": {
+      "type": "string",
+      "format": "uuid"
+    }
   },
   "additionalProperties": false,
   "required": ["chargingPortId", "available", "cost", "type", "power"]

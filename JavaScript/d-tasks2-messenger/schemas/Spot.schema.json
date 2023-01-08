@@ -9,6 +9,10 @@
       "type": "string",
       "format": "uuid"
     },
+    "parkingId": {
+      "type": "string",
+      "format": "uuid"
+    },
     "floor": { "type": "integer" },
     "place": { "type": "integer" },
     "available": { "type": "boolean" },
