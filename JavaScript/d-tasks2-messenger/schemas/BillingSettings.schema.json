@@ -2,7 +2,7 @@
   "$id": "https://klarpen.com/schemas/BillingSettings.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "BillingSettings",
-  "description": "A client billing settings",
+  "description": "A client's billing settings",
   "type": "object",
   "properties": {
     "billingSettingsId": {

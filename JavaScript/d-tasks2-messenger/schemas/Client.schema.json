@@ -26,12 +26,17 @@
         }
       }
     },
+    "vehicleId": {
+      "type": "string",
+      "format": "uuid"
+    },
     "vehicle": { "$ref": "https://klarpen.com/schemas/Vehicle.schema.json" },
     "billingSettings": {
       "type": "array",
-      "items": { "$ref": "https://klarpen.com/schemas/BillingSettings.schema.json" }
+      "items": { "$ref": "https://klarpen.com/schemas/BillingSettings.schema.json" },
+      "minItems": 1
     }
   },
   "additionalProperties": false,
-  "required": ["clientId", "accountId", "firstName", "lastName", "vehicle"]
+  "required": ["clientId", "accountId", "firstName", "lastName", "vehicleId", "vehicle"]
 }

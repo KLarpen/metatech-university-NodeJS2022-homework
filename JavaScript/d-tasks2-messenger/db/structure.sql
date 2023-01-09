@@ -82,7 +82,7 @@ CREATE TABLE "Spot" (
   "place" integer NOT NULL,
   "cost" double precision NOT NULL,
   "available" boolean DEFAULT TRUE,
-  "suitableFor" varchar(32) NOT NULL
+  "suitableFor" varchar(32)[] NOT NULL
 );
 
 ALTER TABLE "Spot" ADD CONSTRAINT "pkSpot" PRIMARY KEY ("spotId");
@@ -91,7 +91,7 @@ ALTER TABLE "Spot" ADD CONSTRAINT "fkSpotParking" FOREIGN KEY ("parkingId") REFE
 CREATE TABLE "ElectricCharger" (
   "electricChargerId" uuid NOT NULL DEFAULT gen_random_uuid(),
   "model" varchar NOT NULL,
-  "parkingId" uuid NOT NULL
+  "parkingId" uuid
 );
 
 ALTER TABLE "ElectricCharger" ADD CONSTRAINT "pkElectricCharger" PRIMARY KEY ("electricChargerId");
