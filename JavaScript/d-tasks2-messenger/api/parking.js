@@ -5,12 +5,20 @@
   },
 
   async addParkingChargers({ parkingId, electricChargerIdList }) {
-    console.log({ method: 'parking.addParkingChargers', parkingId, electricChargerIdList });
+    console.log({
+      method: 'parking.addParkingChargers',
+      parkingId,
+      electricChargerIdList,
+    });
     return { status: 'ok' };
   },
 
   async removeParkingChargers({ parkingId, electricChargerIdList }) {
-    console.log({ method: 'parking.removeParkingChargers', parkingId, electricChargerIdList });
+    console.log({
+      method: 'parking.removeParkingChargers',
+      parkingId,
+      electricChargerIdList,
+    });
     return { status: 'ok' };
   },
 
@@ -21,9 +29,18 @@
     cost,
     suitableFor,
     electricChargerIdList,
-    chargingPortIdList
+    chargingPortIdList,
   }) {
-    console.log({ method: 'parking.addSpot', parkingId, floor, place, cost, suitableFor, electricChargerIdList, chargingPortIdList });
+    console.log({
+      method: 'parking.addSpot',
+      parkingId,
+      floor,
+      place,
+      cost,
+      suitableFor,
+      electricChargerIdList,
+      chargingPortIdList,
+    });
     return { status: 'ok', spot: {} };
   },
 
@@ -33,9 +50,17 @@
     cost,
     suitableFor,
     electricChargerIdList,
-    chargingPortIdList
+    chargingPortIdList,
   }) {
-    console.log({ method: 'parking.updateSpot', spotId, available, cost, suitableFor, electricChargerIdList, chargingPortIdList });
+    console.log({
+      method: 'parking.updateSpot',
+      spotId,
+      available,
+      cost,
+      suitableFor,
+      electricChargerIdList,
+      chargingPortIdList,
+    });
     return { status: 'ok' };
   },
 
@@ -45,12 +70,23 @@
   },
 
   async createElectricCharger({ model, ports, parkingId }) {
-    console.log({ method: 'parking.createElectricCharger', model, ports, parkingId });
+    console.log({
+      method: 'parking.createElectricCharger',
+      model,
+      ports,
+      parkingId,
+    });
     return { status: 'ok', electricCharger: {} };
   },
 
   async updateChargingPort({ chargingPortId, available, cost, power }) {
-    console.log({ method: 'parking.updateChargingPort', chargingPortId, available, cost, power });
+    console.log({
+      method: 'parking.updateChargingPort',
+      chargingPortId,
+      available,
+      cost,
+      power,
+    });
     return { status: 'ok' };
   },
 

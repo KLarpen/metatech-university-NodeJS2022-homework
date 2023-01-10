@@ -11,7 +11,7 @@ const hash = require('./hash.js')(config.HASHING);
 const logger = require('./logger/provider.js')({
   ...config.LOGGER,
   /** Absolute path to the application root folder to filter out from stack traces */
-  appRootPath: process.cwd()
+  appRootPath: process.cwd(),
 });
 
 const sandbox = {
@@ -28,13 +28,17 @@ const routing = {};
     if (!fileName.endsWith('.js')) continue;
     const filePath = path.join(apiPath, fileName);
     const serviceName = path.basename(fileName, '.js');
-    routing[serviceName] = await load(filePath, Object.freeze({ ...sandbox}));
-    logger.log('Service { name: %s, methods: [%s] }', serviceName, Object.keys(routing[serviceName]).join(', '));
+    routing[serviceName] = await load(filePath, Object.freeze({ ...sandbox }));
+    logger.log(
+      'Service { name: %s, methods: [%s] }',
+      serviceName,
+      Object.keys(routing[serviceName]).join(', '),
+    );
   }
 
   staticServer('./static', config.SERVERS.static.port, sandbox.console);
   server(routing, config.SERVERS[config.transport].port, {
     console: sandbox.console,
-    allowedClientOrigins: [config.SERVERS.static]
+    allowedClientOrigins: [config.SERVERS.static],
   });
 })();

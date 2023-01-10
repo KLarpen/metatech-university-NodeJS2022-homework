@@ -20,7 +20,9 @@ class Logger {
     const date = new Date().toISOString().substring(0, 10);
     const filePath = path.join(logPath, `${date}.log`);
     this.stream = fs.createWriteStream(filePath, { flags: 'a' });
-    this.regexp = appRootPath ? new RegExp(path.dirname(appRootPath), 'g') : null;
+    this.regexp = appRootPath
+      ? new RegExp(path.dirname(appRootPath), 'g')
+      : null;
   }
 
   close() {
@@ -54,9 +56,9 @@ class Logger {
 
   error(...args) {
     const msg = util.format(...args).replace(/[\n\r]{2,}/g, '\n');
-    this.write('error', this.regexp !== null
-      ? msg.replace(this.regexp, '')
-      : msg
+    this.write(
+      'error',
+      this.regexp !== null ? msg.replace(this.regexp, '') : msg,
     );
   }
 

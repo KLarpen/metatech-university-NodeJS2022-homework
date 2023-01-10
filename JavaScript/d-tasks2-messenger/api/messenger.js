@@ -10,7 +10,11 @@
   },
 
   async updateAreaMembers({ areaId, memberIdList }) {
-    console.log({ method: 'messenger.updateAreaMembers', areaId, memberIdList });
+    console.log({
+      method: 'messenger.updateAreaMembers',
+      areaId,
+      memberIdList,
+    });
     return { status: 'ok' };
   },
 
@@ -26,7 +30,7 @@
 
   async sendMessage({ areaId, text }) {
     console.log({ method: 'messenger.sendMessage', areaId, text });
-    return { status: 'ok', message: { areaId, text} };
+    return { status: 'ok', message: { areaId, text } };
   },
 
   async readMessages({ areaId }) {
