@@ -2,11 +2,17 @@
   "parserOptions": {
     "sourceType": "module"
   },
-  "rules": {
-    "strict": ["error", "never"]
-  },
   "globals": {
     "db": "readonly",
     "common": "readonly"
+  },
+  "rules": {
+    "strict": ["error", "never"],
+    "id-denylist": [
+      2,
+      "db",
+      "common",
+      "console"
+    ]
   }
 }
