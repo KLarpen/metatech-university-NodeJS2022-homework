@@ -1,12 +1,12 @@
 {
   "name": "metatech-university-nodejs2022-homework",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Metatech University homework project by Vladyslav Karpenko (KLarpen). Course NodeJS 2022-2023",
   "license": "MIT",
   "private": true,
   "main": "main.js",
   "dependencies": {
     "pg": "^8.8.0",
-    "ws": "^8.8.1"
+    "ws": "^8.12.0"
   }
 }
