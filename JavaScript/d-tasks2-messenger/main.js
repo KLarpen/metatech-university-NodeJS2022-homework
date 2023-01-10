@@ -7,7 +7,7 @@ const load = require('./load.js')(config.SANDBOX_RUN_OPTIONS);
 const server = require(`./transport/${config.transport}.js`);
 const staticServer = require('./static.js');
 const db = require('./db.js')(config.DB);
-const hash = require('./hash.js')(config.HASHING);
+const common = require('./common.js')(config);
 const logger = require('./logger/provider.js')({
   ...config.LOGGER,
   /** Absolute path to the application root folder to filter out from stack traces */
@@ -15,9 +15,9 @@ const logger = require('./logger/provider.js')({
 });
 
 const sandbox = {
-  console: Object.freeze(logger),
   db: Object.freeze(db),
-  common: { hash },
+  console: Object.freeze(logger),
+  common: Object.freeze(common),
 };
 const apiPath = path.join(process.cwd(), './api');
 const routing = {};
