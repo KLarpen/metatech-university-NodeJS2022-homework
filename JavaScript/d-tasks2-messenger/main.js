@@ -3,16 +3,16 @@
 const fsp = require('node:fs').promises;
 const path = require('node:path');
 const config = require('./config.js');
-const load = require('./load.js')(config.SANDBOX_RUN_OPTIONS);
-const server = require(`./transport/${config.transport}.js`);
-const staticServer = require('./static.js');
-const db = require('./db.js')(config.DB);
-const common = require('./common.js')(config);
-const logger = require('./logger/provider.js')({
+const staticServer = require('./lib/static.js');
+const db = require('./lib/db.js')(config.DB);
+const common = require('./lib/common.js')(config);
+const logger = require('./lib/logger/provider.js')({
   ...config.LOGGER,
   /** Absolute path to the application root folder to filter out from stack traces */
   appRootPath: process.cwd(),
 });
+const load = require('./lib/load.js')(config.SANDBOX_RUN_OPTIONS);
+const server = require(`./transport/${config.transport}.js`);
 
 const sandbox = {
   db: Object.freeze(db),
