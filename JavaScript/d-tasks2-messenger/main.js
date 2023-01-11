@@ -15,6 +15,7 @@ const load = require('./lib/load.js')(config.SANDBOX_RUN_OPTIONS);
 const server = require(`./transport/${config.transport}.js`);
 
 const sandbox = {
+  api: Object.freeze({}),
   db: Object.freeze(db),
   console: Object.freeze(logger),
   common: Object.freeze(common),

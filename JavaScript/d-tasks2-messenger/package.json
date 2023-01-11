@@ -1,6 +1,6 @@
 {
   "name": "metatech-university-nodejs2022-homework",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "description": "Metatech University homework project by Vladyslav Karpenko (KLarpen). Course NodeJS 2022-2023: how to use DDD, SOLID, GRASP and GoF in JavaScript and Node.js",
   "license": "MIT",
   "private": true,

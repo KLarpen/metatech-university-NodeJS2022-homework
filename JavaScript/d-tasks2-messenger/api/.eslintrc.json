@@ -3,6 +3,7 @@
     "sourceType": "module"
   },
   "globals": {
+    "api": "readonly",
     "db": "readonly",
     "common": "readonly"
   },
@@ -10,6 +11,7 @@
     "strict": ["error", "never"],
     "id-denylist": [
       2,
+      "api",
       "db",
       "common",
       "console"
