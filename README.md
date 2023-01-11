@@ -6,4 +6,5 @@ The actual packages code placed in the `JavaScript` directory. There is iterativ
 ## Tasks #2 (custom domain choice explained)
 **Custom domain that has been chosen:** parking network for EV with warranty of available electric charger on the spot.
 
+More details in the [d-tasks2-messenger/README](./JavaScript/d-tasks2-messenger/README.md).
 
