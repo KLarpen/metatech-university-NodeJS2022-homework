@@ -85,19 +85,16 @@ erDiagram
   Client ||--|{ BillingSettings : has
   Client }o..|| Vehicle : "owns a model of"
   Vehicle ||..|| PortType : with
-
   Rent }o..|| Spot : "the available"
   Rent }o..|| ChargingPort : "the available"
   Client ||--o{ Rent : can
   BillingSettings ||--o{ Payment : "will be used for"
   Rent ||--o{ Payment : "must be finished with"
-
   Parking ||--|{ Spot : has
   Spot ||..|{ ElectricCharger : "has reachable"
   Spot ||..|{ ChargingPort : "has reachable"
   ElectricCharger ||--|{ ChargingPort : with
   ChargingPort ||..|| PortType : "is of"
-
   Vehicle {
     string model
     VehicleKind kind
