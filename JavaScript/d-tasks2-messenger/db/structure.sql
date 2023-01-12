@@ -114,7 +114,7 @@ CREATE TABLE "PortType" (
 );
 
 ALTER TABLE "PortType" ADD CONSTRAINT "pkPortType" PRIMARY KEY ("portTypeId");
-CREATE UNIQUE INDEX "akPortTypeSocket" ON "PortType" ("socket");
+CREATE UNIQUE INDEX "akPortTypeSocket" ON "PortType" ("socket", "current");
 
 CREATE TABLE "ChargingPort" (
   "chargingPortId" uuid NOT NULL DEFAULT gen_random_uuid(),

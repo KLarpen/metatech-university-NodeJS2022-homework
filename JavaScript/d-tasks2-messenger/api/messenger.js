@@ -4,12 +4,12 @@
     return { status: 'ok', area: { name } };
   },
 
-  async updateAreaName({ areaId, name }) {
+  async updateAreaName(areaId, name) {
     console.log({ method: 'messenger.updateAreaName', areaId, name });
     return { status: 'ok' };
   },
 
-  async updateAreaMembers({ areaId, memberIdList }) {
+  async updateAreaMembers(areaId, memberIdList) {
     console.log({
       method: 'messenger.updateAreaMembers',
       areaId,
@@ -18,22 +18,22 @@
     return { status: 'ok' };
   },
 
-  async transferAreaOwnership({ areaId, ownerId }) {
+  async transferAreaOwnership(areaId, ownerId) {
     console.log({ method: 'messenger.transferAreaOwnership', areaId, ownerId });
     return { status: 'ok' };
   },
 
-  async readArea({ areaId }) {
+  async readArea(areaId) {
     console.log({ method: 'messenger.readArea', areaId });
     return { status: 'ok', areas: [areaId] };
   },
 
-  async sendMessage({ areaId, text }) {
+  async sendMessage(areaId, text) {
     console.log({ method: 'messenger.sendMessage', areaId, text });
     return { status: 'ok', message: { areaId, text } };
   },
 
-  async readMessages({ areaId }) {
+  async readMessages(areaId) {
     console.log({ method: 'messenger.readMessages', areaId });
     return { status: 'ok', messages: [] };
   },

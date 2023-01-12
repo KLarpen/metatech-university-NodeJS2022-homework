@@ -142,7 +142,32 @@ const api = scaffold('http://127.0.0.1:8001', {
   },
 });
 
+// Example of usage
 (async () => {
-  const data = await api.auth.signin('marcus', 'marcus');
+  let spot, port;
+  const data = await api.auth.signin('user', 'nopassword');
   console.dir({ data });
+  // Just get common catalogs for usage
+  const portTypes = await api.parking.getKnownPortTypes();
+  const vehicleModels = await api.client.getKnownVehicles();
+  console.dir({ portTypes, vehicleModels });
+  // Search for parking spot
+  // parkingId in getAvailableSpot() is an optional argument so omitted there
+  const searchForSpot = await api.parking.getAvailableSpot();
+  console.dir({ searchForSpot });
+  if (
+    searchForSpot.parkings.length > 0 &&
+    searchForSpot.parkings.spots.length > 0
+  ) {
+    // Let's assume that the first available spot was selected by the user
+    spot = searchForSpot.parkings.spots[0];
+    if (spot.ports.length > 0) port = spot.ports[0];
+  }
+  // Rent
+  if (spot && port) {
+    const renting = api.parking.rentSpot(spot.spotId, port.chargingPortId);
+    console.dir({ renting });
+  } else {
+    console.log('There is no available EV parking spots with chargers');
+  }
 })();

@@ -32,12 +32,12 @@
     return { status: 'ok' };
   },
 
-  async selectMainBilling({ billingSettingsId }) {
+  async selectMainBilling(billingSettingsId) {
     console.log({ method: 'client.selectMainBilling', billingSettingsId });
     return { status: 'ok' };
   },
 
-  async deleteBillingSettings({ billingSettingsId }) {
+  async deleteBillingSettings(billingSettingsId) {
     console.log({ method: 'client.deleteBillingSettings', billingSettingsId });
     return { status: 'ok' };
   },

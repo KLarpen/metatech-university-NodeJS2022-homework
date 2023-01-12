@@ -1,5 +1,5 @@
 ({
-  async signin({ login, password }) {
+  async signin(login, password) {
     console.log({ method: 'auth.signin', login, password });
     return { status: 'ok', token: '--no-token-provided--' };
   },

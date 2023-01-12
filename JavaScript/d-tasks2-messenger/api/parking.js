@@ -4,7 +4,7 @@
     return { status: 'ok', parking: { name, address, location } };
   },
 
-  async addParkingChargers({ parkingId, electricChargerIdList }) {
+  async addParkingChargers(parkingId, electricChargerIdList) {
     console.log({
       method: 'parking.addParkingChargers',
       parkingId,
@@ -13,7 +13,7 @@
     return { status: 'ok' };
   },
 
-  async removeParkingChargers({ parkingId, electricChargerIdList }) {
+  async removeParkingChargers(parkingId, electricChargerIdList) {
     console.log({
       method: 'parking.removeParkingChargers',
       parkingId,
@@ -64,7 +64,7 @@
     return { status: 'ok' };
   },
 
-  async deleteSpot({ spotId }) {
+  async deleteSpot(spotId) {
     console.log({ method: 'parking.deleteSpot', spotId });
     return { status: 'ok' };
   },
@@ -100,17 +100,17 @@
     return { status: 'ok', portTypes: [] };
   },
 
-  async getAvailableSpot({ parkingId }) {
+  async getAvailableSpot(parkingId) {
     console.log({ method: 'parking.getAvailableSpot', parkingId });
     return { status: 'ok', parkings: [] };
   },
 
-  async rentSpot({ spotId, chargingPortId }) {
+  async rentSpot(spotId, chargingPortId) {
     console.log({ method: 'parking.rentSpot', spotId, chargingPortId });
     return { status: 'ok' };
   },
 
-  async finishRent({ rentId, billingSettingsId }) {
+  async finishRent(rentId, billingSettingsId) {
     console.log({ method: 'parking.finishRent', rentId, billingSettingsId });
     return { status: 'ok', totalPrice: 100 };
   },
