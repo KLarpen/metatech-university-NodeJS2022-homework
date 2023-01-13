@@ -16,13 +16,11 @@ const DATETIME_LENGTH = 19;
 
 class Logger {
   constructor(logPath, appRootPath) {
-    this.path = logPath;
+    this.path = appRootPath;
     const date = new Date().toISOString().substring(0, 10);
     const filePath = path.join(logPath, `${date}.log`);
     this.stream = fs.createWriteStream(filePath, { flags: 'a' });
-    this.regexp = appRootPath
-      ? new RegExp(path.dirname(appRootPath), 'g')
-      : null;
+    this.regexp = this.path ? new RegExp(path.dirname(this.path), 'g') : null;
   }
 
   close() {
