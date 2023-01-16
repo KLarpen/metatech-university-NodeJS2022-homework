@@ -56,28 +56,7 @@ If the diagram not renders you may watch it on the [Mermaid.live](https://mermai
 
 ### Test variants of the same diagram with different detalization to find out the cause of GitHub rendering issue
 
-Test 1: without all properties of the entities
-```mermaid
-erDiagram
-  Account }|..|{ Role : "has assigned"
-  Account ||--o| Client : "might be the"
-  Client ||--|{ BillingSettings : has
-  Client }o..|| Vehicle : "owns a model of"
-  Vehicle ||..|| PortType : with
-
-  Rent }o..|| Spot : "the available"
-  Rent }o..|| ChargingPort : "the available"
-  Client ||--o{ Rent : can
-  BillingSettings ||--o{ Payment : "will be used for"
-  Rent ||--o{ Payment : "must be finished with"
-
-  Parking ||--|{ Spot : has
-  Spot ||..|{ ElectricCharger : "has reachable"
-  Spot ||..|{ ChargingPort : "has reachable"
-  ElectricCharger ||--|{ ChargingPort : with
-  ChargingPort ||..|| PortType : "is of"
-```
-Test 2: Entity Declaration first + no new line separation + without custom type properties
+Test 4: Entity Declaration first + without custom type properties
 ```mermaid
 erDiagram
   Vehicle {
@@ -104,58 +83,326 @@ erDiagram
     number amount
     timestamptz when
   }
+
   Account }|..|{ Role : "has assigned"
   Account ||--o| Client : "might be the"
   Client ||--|{ BillingSettings : has
   Client }o..|| Vehicle : "owns a model of"
   Vehicle ||..|| PortType : with
+
   Rent }o..|| Spot : "the available"
   Rent }o..|| ChargingPort : "the available"
   Client ||--o{ Rent : can
   BillingSettings ||--o{ Payment : "will be used for"
   Rent ||--o{ Payment : "must be finished with"
+
   Parking ||--|{ Spot : has
   Spot ||..|{ ElectricCharger : "has reachable"
   Spot ||..|{ ChargingPort : "has reachable"
   ElectricCharger ||--|{ ChargingPort : with
   ChargingPort ||..|| PortType : "is of"
 ```
-Test 3: Entity Declaration right after first mention + no new line separation + without custom type properties
+
+Test 5: Entity Declaration first + without property of type: `VehicleKind[]`
+```mermaid
+erDiagram
+  Vehicle {
+    string model
+    VehicleKind kind
+  }
+  Parking {
+    string name
+    json address
+    json location
+  }
+  Spot {
+    bool available
+    number cost
+  }
+  ChargingPort {
+    bool available
+    number cost
+  }
+  Rent {
+    timestamptz started
+    json freezedCostRates
+    timestamptz finished
+    number totalPrice
+  }
+  Payment {
+    number amount
+    timestamptz when
+  }
+
+  Account }|..|{ Role : "has assigned"
+  Account ||--o| Client : "might be the"
+  Client ||--|{ BillingSettings : has
+  Client }o..|| Vehicle : "owns a model of"
+  Vehicle ||..|| PortType : with
+
+  Rent }o..|| Spot : "the available"
+  Rent }o..|| ChargingPort : "the available"
+  Client ||--o{ Rent : can
+  BillingSettings ||--o{ Payment : "will be used for"
+  Rent ||--o{ Payment : "must be finished with"
+
+  Parking ||--|{ Spot : has
+  Spot ||..|{ ElectricCharger : "has reachable"
+  Spot ||..|{ ChargingPort : "has reachable"
+  ElectricCharger ||--|{ ChargingPort : with
+  ChargingPort ||..|| PortType : "is of"
+```
+
+Test 6: Entity Declaration first + without properties of types: `VehicleKind`, `VehicleKind[]`
+```mermaid
+erDiagram
+  Vehicle {
+    string model
+  }
+  Parking {
+    string name
+    json address
+    json location
+  }
+  Spot {
+    bool available
+    number cost
+  }
+  ChargingPort {
+    bool available
+    number cost
+  }
+  Rent {
+    timestamptz started
+    json freezedCostRates
+    timestamptz finished
+    number totalPrice
+  }
+  Payment {
+    number amount
+    timestamptz when
+  }
+
+  Account }|..|{ Role : "has assigned"
+  Account ||--o| Client : "might be the"
+  Client ||--|{ BillingSettings : has
+  Client }o..|| Vehicle : "owns a model of"
+  Vehicle ||..|| PortType : with
+
+  Rent }o..|| Spot : "the available"
+  Rent }o..|| ChargingPort : "the available"
+  Client ||--o{ Rent : can
+  BillingSettings ||--o{ Payment : "will be used for"
+  Rent ||--o{ Payment : "must be finished with"
+
+  Parking ||--|{ Spot : has
+  Spot ||..|{ ElectricCharger : "has reachable"
+  Spot ||..|{ ChargingPort : "has reachable"
+  ElectricCharger ||--|{ ChargingPort : with
+  ChargingPort ||..|| PortType : "is of"
+```
+
+Test 7: Entity Declaration first + with properties of types `VehicleKind` & `VehicleKind[]` replaced by  `string` & `string[]`
+```mermaid
+erDiagram
+  Vehicle {
+    string model
+    string kind
+  }
+  Parking {
+    string name
+    json address
+    json location
+  }
+  Spot {
+    bool available
+    string[] suitableFor
+    number cost
+  }
+  ChargingPort {
+    bool available
+    number cost
+  }
+  Rent {
+    timestamptz started
+    json freezedCostRates
+    timestamptz finished
+    number totalPrice
+  }
+  Payment {
+    number amount
+    timestamptz when
+  }
+
+  Account }|..|{ Role : "has assigned"
+  Account ||--o| Client : "might be the"
+  Client ||--|{ BillingSettings : has
+  Client }o..|| Vehicle : "owns a model of"
+  Vehicle ||..|| PortType : with
+
+  Rent }o..|| Spot : "the available"
+  Rent }o..|| ChargingPort : "the available"
+  Client ||--o{ Rent : can
+  BillingSettings ||--o{ Payment : "will be used for"
+  Rent ||--o{ Payment : "must be finished with"
+
+  Parking ||--|{ Spot : has
+  Spot ||..|{ ElectricCharger : "has reachable"
+  Spot ||..|{ ChargingPort : "has reachable"
+  ElectricCharger ||--|{ ChargingPort : with
+  ChargingPort ||..|| PortType : "is of"
+```
+
+Test 8: Entity Declaration first + without properties of types: `timestamptz`
+```mermaid
+erDiagram
+  Vehicle {
+    string model
+    VehicleKind kind
+  }
+  Parking {
+    string name
+    json address
+    json location
+  }
+  Spot {
+    bool available
+    VehicleKind[] suitableFor
+    number cost
+  }
+  ChargingPort {
+    bool available
+    number cost
+  }
+  Rent {
+    string started
+    json freezedCostRates
+    string finished
+    number totalPrice
+  }
+  Payment {
+    number amount
+    string when
+  }
+
+  Account }|..|{ Role : "has assigned"
+  Account ||--o| Client : "might be the"
+  Client ||--|{ BillingSettings : has
+  Client }o..|| Vehicle : "owns a model of"
+  Vehicle ||..|| PortType : with
+
+  Rent }o..|| Spot : "the available"
+  Rent }o..|| ChargingPort : "the available"
+  Client ||--o{ Rent : can
+  BillingSettings ||--o{ Payment : "will be used for"
+  Rent ||--o{ Payment : "must be finished with"
+
+  Parking ||--|{ Spot : has
+  Spot ||..|{ ElectricCharger : "has reachable"
+  Spot ||..|{ ChargingPort : "has reachable"
+  ElectricCharger ||--|{ ChargingPort : with
+  ChargingPort ||..|| PortType : "is of"
+```
+
+Test 9: Entity Declaration first + without properties of types: `json`
+```mermaid
+erDiagram
+  Vehicle {
+    string model
+    VehicleKind kind
+  }
+  Parking {
+    string name
+    string address
+    string location
+  }
+  Spot {
+    bool available
+    VehicleKind[] suitableFor
+    number cost
+  }
+  ChargingPort {
+    bool available
+    number cost
+  }
+  Rent {
+    timestamptz started
+    string freezedCostRates
+    timestamptz finished
+    number totalPrice
+  }
+  Payment {
+    number amount
+    timestamptz when
+  }
+
+  Account }|..|{ Role : "has assigned"
+  Account ||--o| Client : "might be the"
+  Client ||--|{ BillingSettings : has
+  Client }o..|| Vehicle : "owns a model of"
+  Vehicle ||..|| PortType : with
+
+  Rent }o..|| Spot : "the available"
+  Rent }o..|| ChargingPort : "the available"
+  Client ||--o{ Rent : can
+  BillingSettings ||--o{ Payment : "will be used for"
+  Rent ||--o{ Payment : "must be finished with"
+
+  Parking ||--|{ Spot : has
+  Spot ||..|{ ElectricCharger : "has reachable"
+  Spot ||..|{ ChargingPort : "has reachable"
+  ElectricCharger ||--|{ ChargingPort : with
+  ChargingPort ||..|| PortType : "is of"
+```
+
+Test 10 Complete and the same as original but with property type `VehicleKind[]` replaced by `VehicleKindArray`
+
 ```mermaid
 erDiagram
   Account }|..|{ Role : "has assigned"
   Account ||--o| Client : "might be the"
   Client ||--|{ BillingSettings : has
   Client }o..|| Vehicle : "owns a model of"
-  Vehicle {
-    string model
-  }
   Vehicle ||..|| PortType : with
+
   Rent }o..|| Spot : "the available"
-  Rent {
-    number totalPrice
-  }
-  Spot {
-    bool available
-    number cost
-  }
   Rent }o..|| ChargingPort : "the available"
   Client ||--o{ Rent : can
   BillingSettings ||--o{ Payment : "will be used for"
-  Payment {
-    number amount
-  }
   Rent ||--o{ Payment : "must be finished with"
+
   Parking ||--|{ Spot : has
-  Parking {
-    string name
-  }
   Spot ||..|{ ElectricCharger : "has reachable"
   Spot ||..|{ ChargingPort : "has reachable"
+  ElectricCharger ||--|{ ChargingPort : with
+  ChargingPort ||..|| PortType : "is of"
+
+  Vehicle {
+    string model
+    VehicleKind kind
+  }
+  Parking {
+    string name
+    json address
+    json location
+  }
+  Spot {
+    bool available
+    VehicleKindArray suitableFor
+    number cost
+  }
   ChargingPort {
     bool available
     number cost
   }
-  ElectricCharger ||--|{ ChargingPort : with
-  ChargingPort ||..|| PortType : "is of"
+  Rent {
+    timestamptz started
+    json freezedCostRates
+    timestamptz finished
+    number totalPrice
+  }
+  Payment {
+    number amount
+    timestamptz when
+  }
 ```
