@@ -1,0 +1,68 @@
+@startuml
+' hide the spot (E)ntity
+hide circle
+
+' avoid problems with angled crows feet but makes diagram ugly (uncomment next line to use)
+' skinparam linetype ortho
+
+entity Account {}
+entity Role {}
+entity Client {}
+entity BillingSettings {}
+entity PortType {}
+entity ElectricCharger {}
+
+
+entity Vehicle {
+  * model : string
+  * kind : VehicleKind
+}
+
+entity Parking {
+  * name : string
+  * address : json
+  location : json
+}
+
+entity Spot {
+  available : bool
+  * suitableFor : VehicleKind[]
+  * cost : number
+}
+
+entity ChargingPort {
+  * cost : number
+  available : bool
+}
+
+entity Rent {
+  * started : timestamptz
+  * freezedCostRates : json
+  finished : timestamptz
+  totalPrice : number
+}
+
+entity Payment {
+  * amount : number
+  * when : timestamptz
+}
+
+Account }|..|{ Role : "has assigned"
+Account ||--o| Client : "might be the"
+Client ||--|{ BillingSettings : has
+Client }o..|| Vehicle : "owns a model of"
+Vehicle ||..|| PortType : with
+
+Rent }o..|| Spot : "the available"
+Rent }o..|| ChargingPort : "the available"
+Client ||--o{ Rent : can
+BillingSettings ||--o{ Payment : "will be used for"
+Rent ||--o{ Payment : "must be finished with"
+
+Parking ||--|{ Spot : has
+Spot ||..|{ ElectricCharger : "has reachable"
+Spot ||..|{ ChargingPort : "has reachable"
+ElectricCharger ||--|{ ChargingPort : with
+ChargingPort ||..|| PortType : "is of"
+
+@enduml
