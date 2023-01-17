@@ -7,5 +7,5 @@ declare namespace db {
   export function read(id: number | string, fields: string[]): QueryResult;
   export function create(record: object): QueryResult;
   export function update(id: number | string, record: object): QueryResult;
-  export {deleteRecord as delete};
+  export { deleteRecord as delete };
 }
