@@ -1,3 +1,5 @@
+// @ts-check
+/** @type {typeof import('api/messenger')} */
 ({
   async createArea({ name, memberIdList }) {
     console.log({ method: 'messenger.createArea', name, memberIdList });
@@ -25,7 +27,7 @@
 
   async readArea(areaId) {
     console.log({ method: 'messenger.readArea', areaId });
-    return { status: 'ok', areas: [areaId] };
+    return { status: 'ok', areas: [{ areaId }] };
   },
 
   async sendMessage(areaId, text) {

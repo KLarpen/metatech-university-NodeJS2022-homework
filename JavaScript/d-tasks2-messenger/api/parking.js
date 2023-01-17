@@ -1,3 +1,5 @@
+// @ts-check
+/** @type {typeof import('api/parking')} */
 ({
   async createParking({ name, address, location }) {
     console.log({ method: 'parking.createParking', name, address, location });
@@ -44,14 +46,10 @@
     return { status: 'ok', spot: {} };
   },
 
-  async updateSpot({
+  async updateSpot(
     spotId,
-    available,
-    cost,
-    suitableFor,
-    electricChargerIdList,
-    chargingPortIdList,
-  }) {
+    { available, cost, suitableFor, electricChargerIdList, chargingPortIdList },
+  ) {
     console.log({
       method: 'parking.updateSpot',
       spotId,
@@ -79,7 +77,7 @@
     return { status: 'ok', electricCharger: {} };
   },
 
-  async updateChargingPort({ chargingPortId, available, cost, power }) {
+  async updateChargingPort(chargingPortId, { available, cost, power }) {
     console.log({
       method: 'parking.updateChargingPort',
       chargingPortId,

@@ -1,3 +1,5 @@
+// @ts-check
+/** @type {typeof import('api/auth')} */
 ({
   async signin(login, password) {
     console.log({ method: 'auth.signin', login, password });

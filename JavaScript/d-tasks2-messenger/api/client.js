@@ -1,3 +1,5 @@
+// @ts-check
+/** @type {typeof import('api/client')} */
 ({
   async initClient({
     firstName,
