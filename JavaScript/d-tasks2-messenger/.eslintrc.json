@@ -69,11 +69,11 @@
       "error",
       "always"
     ],
-    // Discussable but conflicting with Prettier
-    // "operator-linebreak": [
-    //   "error",
-    //   "after"
-    // ],
+    "operator-linebreak": [
+      "error",
+      "after",
+      { "overrides": { "?": "before", ":": "before" } }
+    ],
     "no-unreachable": [
       "error"
     ],
@@ -109,6 +109,10 @@
       {
         "functions": false
       }
+    ],
+    "arrow-body-style": [
+      "error",
+      "as-needed"
     ],
     "no-confusing-arrow": [
       "error",
