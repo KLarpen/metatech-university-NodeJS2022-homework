@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Role {
+  roleid   BigInt    @id @default(autoincrement())
+  name     String    @unique
+  accounts Account[]
+}
+
+model Account {
+  accountId BigInt    @id @default(autoincrement())
+  login     String    @unique @db.VarChar(64)
+  password  String
+  roles     Role[]
+  session   Session?
+  ownAreas  Area[]    @relation("AreaOwner")
+  areas     Area[]    @relation("AreaAccount")
+  messages  Message[]
+}
+
+model Session {
+  sessionId BigInt  @id @default(autoincrement())
+  account   Account @relation(fields: [accountId], references: [accountId])
+  accountId BigInt  @unique
+  token     String  @unique
+  ip        String  @db.Inet
+}
+
+model Area {
+  areaId   BigInt    @id @default(autoincrement())
+  name     String    @unique
+  owner    Account   @relation("AreaOwner", fields: [ownerId], references: [accountId])
+  ownerId  BigInt
+  members  Account[] @relation("AreaAccount")
+  messages Message[]
+}
+
+model Message {
+  messageId BigInt  @id @default(autoincrement())
+  text      String
+  from      Account @relation(fields: [fromId], references: [accountId])
+  fromId    BigInt
+  area      Area    @relation(fields: [areaId], references: [areaId])
+  areaId    BigInt
+}
