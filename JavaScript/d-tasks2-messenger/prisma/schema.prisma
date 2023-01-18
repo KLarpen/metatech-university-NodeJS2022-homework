@@ -12,7 +12,7 @@ datasource db {
 }
 
 model Role {
-  roleid   BigInt    @id @default(autoincrement())
+  roleId   BigInt    @id @default(autoincrement())
   name     String    @unique
   accounts Account[]
 }
@@ -52,4 +52,124 @@ model Message {
   fromId    BigInt
   area      Area    @relation(fields: [areaId], references: [areaId])
   areaId    BigInt
+}
+
+enum VehicleKind {
+  BICYCLE    @map("bicycle")
+  SCOOTER    @map("scooter")
+  MOTORCYCLE @map("motorcycle")
+  CAR        @map("car")
+  VAN        @map("van")
+  TRUCK      @map("truck")
+  BUS        @map("bus")
+}
+
+model Parking {
+  parkingId String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String            @db.VarChar()
+  address   Json
+  location  Json
+  spots     Spot[]
+  chargers  ElectricCharger[]
+}
+
+model Spot {
+  spotId      String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  parkingId   String            @db.Uuid
+  parking     Parking           @relation(fields: [parkingId], references: [parkingId])
+  floor       Int
+  place       Int
+  cost        Float
+  available   Boolean           @default(true)
+  suitableFor VehicleKind[]
+  chargers    ElectricCharger[]
+  ports       ChargingPort[]
+  rents       Rent[]
+}
+
+model ElectricCharger {
+  electricChargerId String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  model             String         @db.VarChar()
+  parkingId         String?        @db.Uuid
+  parking           Parking?       @relation(fields: [parkingId], references: [parkingId])
+  spots             Spot[]
+  ports             ChargingPort[]
+}
+
+enum CurrentKind {
+  AC
+  DC
+}
+
+model PortType {
+  portTypeId   BigInt         @id @default(autoincrement())
+  socket       String         @unique @db.VarChar(64)
+  current      CurrentKind
+  stationPorts ChargingPort[]
+  vehicles     Vehicle[]
+}
+
+model ChargingPort {
+  chargingPortId    String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  portTypeId        BigInt
+  type              PortType        @relation(fields: [portTypeId], references: [portTypeId])
+  available         Boolean         @default(true)
+  cost              Float
+  power             Int
+  electricChargerId String          @db.Uuid
+  station           ElectricCharger @relation(fields: [electricChargerId], references: [electricChargerId])
+  spots             Spot[]
+  rents             Rent[]
+}
+
+model Vehicle {
+  vehicleId  String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  model      String      @unique
+  kind       VehicleKind
+  portTypeId BigInt
+  portType   PortType    @relation(fields: [portTypeId], references: [portTypeId])
+}
+
+model Client {
+  clientId        String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  accountId       BigInt            @unique
+  firstName       String
+  lastName        String
+  phones          Json
+  // vehicleId String  @db.Uuid
+  // vehicle Vehicle @relation(fields: [vehicleId], references: [vehicleId])
+  billingSettings BillingSettings[]
+  rents           Rent[]
+}
+
+model BillingSettings {
+  billingSettingsId String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clientId          String  @db.Uuid
+  client            Client  @relation(fields: [clientId], references: [clientId])
+  cardNo            String  @db.VarChar(19)
+  main              Boolean @default(false)
+}
+
+model Rent {
+  rentId           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  spotId           String       @db.Uuid
+  chargingPortId   String       @db.Uuid
+  clientId         String       @db.Uuid
+  started          DateTime     @db.Timestamptz()
+  finished         DateTime?    @db.Timestamptz()
+  freezedCostRates Json
+  totalPrice       Float?
+  spot             Spot         @relation(fields: [spotId], references: [spotId])
+  chargingPort     ChargingPort @relation(fields: [chargingPortId], references: [chargingPortId])
+  client           Client       @relation(fields: [clientId], references: [clientId])
+  payments         Payment[]
+}
+
+model Payment {
+  paymentId         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  rentId            String   @db.Uuid
+  billingSettingsId String   @db.Uuid
+  amount            Float
+  when              DateTime @db.Timestamptz()
+  rent              Rent     @relation(fields: [rentId], references: [rentId])
 }
