@@ -80,7 +80,7 @@ model Spot {
   floor       Int
   place       Int
   cost        Float
-  available   Boolean           @default(true)
+  available   Boolean?          @default(true)
   suitableFor VehicleKind[]
   chargers    ElectricCharger[]
   ports       ChargingPort[]
@@ -113,9 +113,9 @@ model ChargingPort {
   chargingPortId    String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   portTypeId        BigInt
   type              PortType        @relation(fields: [portTypeId], references: [portTypeId])
-  available         Boolean         @default(true)
+  available         Boolean?        @default(true)
   cost              Float
-  power             Int
+  power             Float
   electricChargerId String          @db.Uuid
   station           ElectricCharger @relation(fields: [electricChargerId], references: [electricChargerId])
   spots             Spot[]
@@ -123,11 +123,12 @@ model ChargingPort {
 }
 
 model Vehicle {
-  vehicleId  String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  model      String      @unique
-  kind       VehicleKind
-  portTypeId BigInt
-  portType   PortType    @relation(fields: [portTypeId], references: [portTypeId])
+  vehicleId     String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  model         String      @unique
+  kind          VehicleKind
+  portTypeId    BigInt
+  portType      PortType    @relation(fields: [portTypeId], references: [portTypeId])
+  modelIsUsedBy Client[]
 }
 
 model Client {
@@ -136,18 +137,19 @@ model Client {
   firstName       String
   lastName        String
   phones          Json
-  // vehicleId String  @db.Uuid
-  // vehicle Vehicle @relation(fields: [vehicleId], references: [vehicleId])
+  vehicleId       String            @db.Uuid
+  vehicle         Vehicle           @relation(fields: [vehicleId], references: [vehicleId])
   billingSettings BillingSettings[]
   rents           Rent[]
 }
 
 model BillingSettings {
-  billingSettingsId String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  clientId          String  @db.Uuid
-  client            Client  @relation(fields: [clientId], references: [clientId])
-  cardNo            String  @db.VarChar(19)
-  main              Boolean @default(false)
+  billingSettingsId String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clientId          String    @db.Uuid
+  client            Client    @relation(fields: [clientId], references: [clientId])
+  cardNo            String    @db.VarChar(19)
+  main              Boolean?  @default(false)
+  payments          Payment[]
 }
 
 model Rent {
@@ -166,10 +168,11 @@ model Rent {
 }
 
 model Payment {
-  paymentId         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  rentId            String   @db.Uuid
-  billingSettingsId String   @db.Uuid
+  paymentId         String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  rentId            String          @db.Uuid
+  billingSettingsId String          @db.Uuid
   amount            Float
-  when              DateTime @db.Timestamptz()
-  rent              Rent     @relation(fields: [rentId], references: [rentId])
+  when              DateTime        @db.Timestamptz()
+  rent              Rent            @relation(fields: [rentId], references: [rentId])
+  payerRequisites   BillingSettings @relation(fields: [billingSettingsId], references: [billingSettingsId])
 }
