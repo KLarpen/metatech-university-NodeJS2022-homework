@@ -5,6 +5,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator jsonSchema {
+  provider                 = "prisma-json-schema-generator"
+  output                   = "../schemas/"
+  keepRelationScalarFields = "true"
+  includeRequiredFields    = "true"
+}
+
 datasource db {
   provider          = "postgresql"
   url               = env("DATABASE_URL")
