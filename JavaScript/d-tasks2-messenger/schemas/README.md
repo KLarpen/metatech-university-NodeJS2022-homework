@@ -7,7 +7,7 @@ erDiagram
   Account ||--o| Client : "might be the"
   Client ||--|{ BillingSettings : has
   Client }o..|| Vehicle : "owns a model of"
-  Vehicle ||..|| PortType : with
+  Vehicle }|..|| PortType : with
 
   Rent }o..|| Spot : "the available"
   Rent }o..|| ChargingPort : "the available"
@@ -16,10 +16,10 @@ erDiagram
   Rent ||--o{ Payment : "must be finished with"
 
   Parking ||--|{ Spot : has
-  Spot ||..|{ ElectricCharger : "has reachable"
-  Spot ||..|{ ChargingPort : "has reachable"
+  Spot }|..|{ ElectricCharger : "has reachable"
+  Spot }|..|{ ChargingPort : "has reachable"
   ElectricCharger ||--|{ ChargingPort : with
-  ChargingPort ||..|| PortType : "is of"
+  ChargingPort }|..|| PortType : "is of"
 
   Vehicle {
     string model

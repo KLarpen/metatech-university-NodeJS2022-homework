@@ -66,6 +66,16 @@
           "items": {
             "$ref": "#/definitions/Message"
           }
+        },
+        "client": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Client"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -449,6 +459,9 @@
         },
         "accountId": {
           "type": "integer"
+        },
+        "account": {
+          "$ref": "#/definitions/Account"
         },
         "firstName": {
           "type": "string"
