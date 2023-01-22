@@ -7,7 +7,10 @@ generator client {
 
 generator jsonSchema {
   provider                 = "prisma-json-schema-generator"
-  output                   = "../schemas/"
+  // The generated json-schema neads manual enhancement,
+  // so it would be better to keep it in default folder under prisma
+  // and copy necessary changes into `../schemas/validation-schema.json`
+  // output                   = "../schemas/"
   keepRelationScalarFields = "true"
   includeRequiredFields    = "true"
 }
@@ -42,6 +45,7 @@ model Session {
   accountId BigInt  @unique
   token     String  @unique
   ip        String  @db.Inet
+  data      Json
 }
 
 model Area {

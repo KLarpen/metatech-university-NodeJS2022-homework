@@ -17,6 +17,7 @@
           }
         }
       },
+      "additionalProperties": false,
       "required": [
         "name"
       ]
@@ -28,7 +29,9 @@
           "type": "integer"
         },
         "login": {
-          "type": "string"
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 64
         },
         "password": {
           "type": "string"
@@ -78,6 +81,7 @@
           ]
         }
       },
+      "additionalProperties": false,
       "required": [
         "login",
         "password"
@@ -99,13 +103,20 @@
           "type": "string"
         },
         "ip": {
-          "type": "string"
+          "type": "string",
+          "format": "ipv4"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": true
         }
       },
+      "additionalProperties": false,
       "required": [
         "accountId",
         "token",
-        "ip"
+        "ip",
+        "data"
       ]
     },
     "Area": {
@@ -136,6 +147,7 @@
           }
         }
       },
+      "additionalProperties": false,
       "required": [
         "name",
         "ownerId"
@@ -163,40 +175,56 @@
           "type": "integer"
         }
       },
+      "additionalProperties": false,
       "required": [
         "text",
         "fromId",
         "areaId"
       ]
     },
+    "Location": {
+      "type": "object",
+      "properties": {
+        "latitude": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "longitude": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        }
+      },
+      "additionalProperties": false,
+      "required": [ "latitude", "longitude" ]
+    },
+    "Address": {
+      "type": "object",
+      "properties": {
+        "country": { "type": "string" },
+        "state": { "type": "string" },
+        "city": { "type": "string" },
+        "streetAddress": { "type": "string" }
+      },
+      "additionalProperties": false,
+      "required": ["country", "city", "streetAddress"]
+    },
     "Parking": {
       "type": "object",
       "properties": {
         "parkingId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "name": {
           "type": "string"
         },
         "address": {
-          "type": [
-            "number",
-            "string",
-            "boolean",
-            "object",
-            "array",
-            "null"
-          ]
+          "$ref": "#/definitions/Address"
         },
         "location": {
-          "type": [
-            "number",
-            "string",
-            "boolean",
-            "object",
-            "array",
-            "null"
-          ]
+          "$ref": "#/definitions/Location"
         },
         "spots": {
           "type": "array",
@@ -211,6 +239,7 @@
           }
         }
       },
+      "additionalProperties": false,
       "required": [
         "name",
         "address",
@@ -221,10 +250,12 @@
       "type": "object",
       "properties": {
         "spotId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "parkingId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "parking": {
           "$ref": "#/definitions/Parking"
@@ -247,15 +278,10 @@
         },
         "suitableFor": {
           "type": "array",
-          "enum": [
-            "BICYCLE",
-            "SCOOTER",
-            "MOTORCYCLE",
-            "CAR",
-            "VAN",
-            "TRUCK",
-            "BUS"
-          ]
+          "items": {
+            "$ref": "#/definitions/VehicleKind"
+          },
+          "minItems": 1
         },
         "chargers": {
           "type": "array",
@@ -276,6 +302,7 @@
           }
         }
       },
+      "additionalProperties": false,
       "required": [
         "parkingId",
         "floor",
@@ -284,11 +311,25 @@
         "suitableFor"
       ]
     },
+    "VehicleKind": {
+      "description": "A kind of an electric vehicle",
+      "type": "string",
+      "enum": [
+        "BICYCLE",
+        "SCOOTER",
+        "MOTORCYCLE",
+        "CAR",
+        "VAN",
+        "TRUCK",
+        "BUS"
+      ]
+    },
     "ElectricCharger": {
       "type": "object",
       "properties": {
         "electricChargerId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "model": {
           "type": "string"
@@ -297,7 +338,8 @@
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "format": "uuid"
         },
         "parking": {
           "anyOf": [
@@ -322,6 +364,7 @@
           }
         }
       },
+      "additionalProperties": false,
       "required": [
         "model"
       ]
@@ -355,6 +398,7 @@
           }
         }
       },
+      "additionalProperties": false,
       "required": [
         "socket",
         "current"
@@ -364,7 +408,8 @@
       "type": "object",
       "properties": {
         "chargingPortId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "portTypeId": {
           "type": "integer"
@@ -386,7 +431,8 @@
           "type": "number"
         },
         "electricChargerId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "station": {
           "$ref": "#/definitions/ElectricCharger"
@@ -404,6 +450,7 @@
           }
         }
       },
+      "additionalProperties": false,
       "required": [
         "portTypeId",
         "cost",
@@ -415,22 +462,14 @@
       "type": "object",
       "properties": {
         "vehicleId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "model": {
           "type": "string"
         },
         "kind": {
-          "type": "string",
-          "enum": [
-            "BICYCLE",
-            "SCOOTER",
-            "MOTORCYCLE",
-            "CAR",
-            "VAN",
-            "TRUCK",
-            "BUS"
-          ]
+          "$ref": "#/definitions/VehicleKind"
         },
         "portTypeId": {
           "type": "integer"
@@ -445,17 +484,36 @@
           }
         }
       },
+      "additionalProperties": false,
       "required": [
         "model",
         "kind",
         "portTypeId"
       ]
     },
+    "Phones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": ["type", "value"]
+      },
+      "minItems": 1
+    },
     "Client": {
       "type": "object",
       "properties": {
         "clientId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "accountId": {
           "type": "integer"
@@ -470,17 +528,11 @@
           "type": "string"
         },
         "phones": {
-          "type": [
-            "number",
-            "string",
-            "boolean",
-            "object",
-            "array",
-            "null"
-          ]
+          "$ref": "#/definitions/Phones"
         },
         "vehicleId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "vehicle": {
           "$ref": "#/definitions/Vehicle"
@@ -489,7 +541,8 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/BillingSettings"
-          }
+          },
+          "minItems": 1
         },
         "rents": {
           "type": "array",
@@ -498,6 +551,7 @@
           }
         }
       },
+      "additionalProperties": false,
       "required": [
         "accountId",
         "firstName",
@@ -510,16 +564,19 @@
       "type": "object",
       "properties": {
         "billingSettingsId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "clientId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "client": {
           "$ref": "#/definitions/Client"
         },
         "cardNo": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^([0-9]{4})-([0-9]{4})-([0-9]{4})-([0-9]{4})$"
         },
         "main": {
           "type": [
@@ -535,6 +592,7 @@
           }
         }
       },
+      "additionalProperties": false,
       "required": [
         "clientId",
         "cardNo"
@@ -544,16 +602,20 @@
       "type": "object",
       "properties": {
         "rentId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "spotId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "chargingPortId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "clientId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "started": {
           "type": "string",
@@ -567,14 +629,13 @@
           "format": "date-time"
         },
         "freezedCostRates": {
-          "type": [
-            "number",
-            "string",
-            "boolean",
-            "object",
-            "array",
-            "null"
-          ]
+          "type": "object",
+          "properties": {
+            "spot": { "type": "number" },
+            "port": { "type": "number" }
+          },
+          "required": ["spot", "port"],
+          "additionalProperties": false
         },
         "totalPrice": {
           "type": [
@@ -598,6 +659,7 @@
           }
         }
       },
+      "additionalProperties": false,
       "required": [
         "spotId",
         "chargingPortId",
@@ -610,13 +672,16 @@
       "type": "object",
       "properties": {
         "paymentId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "rentId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "billingSettingsId": {
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "amount": {
           "type": "number"
@@ -632,6 +697,7 @@
           "$ref": "#/definitions/BillingSettings"
         }
       },
+      "additionalProperties": false,
       "required": [
         "rentId",
         "billingSettingsId",
