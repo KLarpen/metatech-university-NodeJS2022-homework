@@ -8,5 +8,6 @@
   // TODO: How to describe domain models that not entity to be stored as JSONB in DB?
   phones: 'json',
   vehicle: 'Vehicle',
-  billingSettings: { many: 'BillingSettings' },
+  // TODO: How to describe one-to-many relation at the "one" side?
+  // billingSettings: { many: 'BillingSettings' }, // <-- this creates many-to-many
 });
