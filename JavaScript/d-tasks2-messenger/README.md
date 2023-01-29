@@ -32,7 +32,7 @@ erDiagram
   Account ||--o| Client : "might be the"
   Client ||--|{ BillingSettings : has
   Client }o..|| Vehicle : "owns a model of"
-  Vehicle ||..|| PortType : with
+  Vehicle }|..|| PortType : with
 
   Rent }o..|| Spot : "the available"
   Rent }o..|| ChargingPort : "the available"
@@ -41,10 +41,10 @@ erDiagram
   Rent ||--o{ Payment : "must be finished with"
 
   Parking ||--|{ Spot : has
-  Spot ||..|{ ElectricCharger : "has reachable"
-  Spot ||..|{ ChargingPort : "has reachable"
+  Spot }|..|{ ElectricCharger : "has reachable"
+  Spot }|..|{ ChargingPort : "has reachable"
   ElectricCharger ||--|{ ChargingPort : with
-  ChargingPort ||..|| PortType : "is of"
+  ChargingPort }|..|| PortType : "is of"
 
   Vehicle {
     string model
@@ -76,59 +76,4 @@ erDiagram
   }
 ```
 
-If the diagram not renders you may watch it on the [Mermaid.live](https://mermaid.live/edit#pako:eNp9VMuu0zAQ_RXL696qj4sQ2XELbBBS1SIWUBbTeNoYYruyHUrb9N8Z20lxH9AsqozPOTNzZuITL41AXnC07yRsLaiVZuxtWZpGe3Zuh8P2xBamRlawFa_AMXBObjWKFc-Rbfv0ZFo2qyXSW8Aqua08WyPzFSZsdxigJPoi61rq7RK9pz9HHFLPYGdDuVv2BStZdunNXlN-pqjimplNUu0BbRvxc2P958MuEPbSVwGxyOSWO5PKo6oY_AJZw7ru6stxswrsluoKcv_CZ_2YU2IXrAQdzm6760BzOKjeoD1Bgj-NQ8E2xmZFPECrxkU3N1JLVxEjdhcpc7A_KUlvbNdidLN_WIq2aZ7vayy9lWVsEu1ltBahrP72l1Pu_HiAv5Xt6rmh9lO5Ct8Pb8Wlu5vxKbww5igL9Rv3IEU6wEepBSMvRIiec2-umRoUpsAPZzQDISw6l0VqU4KXRl90ohedyNqYOtuF2wK-fWeukT6cfaCpxmPdqDU5UhrnL5JXBvxH-hE3bknH8VKh86B2_kj9gfUosk42FvGIYkbsBXh095x-o66yeeOhntMwMbMybePpCggqfP_3qvsKk3t8wBVaBVLQLRO58WOiAfAwZUEDCkMOOGi8WR50yQtvGxzwZieo5O5e6oM70Lw48d-8GD-Ph9PXb149X54BP_BidB7wozFEGA9H6TcdTcajyWgyHXAU0hv7KV168e6Lkl8jIWQ4_wGJprTW)
-
-### Alternative declaration for the Rent -- Payment relation:
-(semantic difference that visualized by Mermaid's diagram logic)
-
-```mermaid
-erDiagram
-  Account }|..|{ Role : "has assigned"
-  Account ||--o| Client : "might be the"
-  Client ||--|{ BillingSettings : has
-  Client }o..|| Vehicle : "owns a model of"
-  Vehicle ||..|| PortType : with
-
-  Rent }o..|| Spot : "the available"
-  Rent }o..|| ChargingPort : "the available"
-  Client ||--o{ Rent : can
-  BillingSettings ||--o{ Payment : "will be used for"
-  Payment }o--|| Rent  : "for the"
-
-  Parking ||--|{ Spot : has
-  Spot ||..|{ ElectricCharger : "has reachable"
-  Spot ||..|{ ChargingPort : "has reachable"
-  ElectricCharger ||--|{ ChargingPort : with
-  ChargingPort ||..|| PortType : "is of"
-
-  Vehicle {
-    string model
-    VehicleKind kind
-  }
-  Parking {
-    string name
-    json address
-    json location
-  }
-  Spot {
-    bool available
-    VehicleKindArray suitableFor
-    number cost
-  }
-  ChargingPort {
-    bool available
-    number cost
-  }
-  Rent {
-    timestamptz started
-    json freezedCostRates
-    timestamptz finished
-    number totalPrice
-  }
-  Payment {
-    number amount
-    timestamptz when
-  }
-```
-
-If the diagram not renders you may watch it on the [Mermaid.live](https://mermaid.live/edit#pako:eNp9VMuS0zAQ_JUpnXf3A3KDABeKqlRCccEcJtYkFuiRkmRS2Tj_zujhoCQLJ5dH3T0z3bbOoneSxEKQ_6Bw79F0FuBd37vRRrhMLy_TGdZOEyygEwMGwBDU3pLsRIucpudnN8FSK-K3hDVqP0TYEsSBCrYeJiiLvldaK7vfUIz8CMxh9QZ2cdx7gm80qL62d0fL_cHwxBrcrqjOgGnK-JXz8evpkAhHFYfOJsy6EdwcXBmQ5wL8jUrjVtcJW9xyQL_nyZLgv_DNRu5c2AvoMfe836-CVngys0VHhiSHxkASds4X0RlxcezTVFQznBGzmQXnf7Hy7Gfdq5qY36YS30dNffSqzxuRvybpCfvh7zIt5WH5N_D3snWOO2oJAW7Lj1l1QoUaaRvqOb0ABO7Dm-bgS6UCPisrgV2QqXppXbllWjRUCj-Ds4BSegqhqWjXY1TOXnWyG1Vk65xuor8f4PsPCKOK6ewTh5iP7Wi27EnvQrxK3ljwH-m3uPkrqJyoDIWI5hBfeT_0kWSzyc4TvZJcMnuNkcIjZ6esCsNMqt2ii6hXHCc1VpYP8XwDRJN--EfV40DFPfEkDHmDSvK1krn53-EARMpZckAp5oTDMbrNyfZiEf1IT2I8SB65XkRisUMduEpSRee_lHsqX1eXPwqEmy8)
+If the diagram not renders you may watch it on the [Mermaid.live](https://mermaid.live/edit#pako:eNp9VMuOGjEQ_BXLZxaFRNqs5rYhm0sUCUGUQ8SlGTeMN34g2xMCM_x72h7DmkciDiPbVdXdVcYdr61AXnF0nyVsHOilYey5rm1rAjv243HfsblVyCq25A14Bt7LjUGx5CWy7x8ebM-mSiKtIlbLTRPYCllocMDmwwgl0U9SKWk2CwyBPp44pF7AjpZq9-wHNrLO5e3OUH2mqWPF7HpQPQFSrz2bWRe-77eRsJOhWZqImReCi60dGqS-GPwGqWClcoclbtqA21BnUfBf-GIi2w3sitWQal7Pl0Ez2OuTRTuCRIdaj4KtrSuauIPWrU9-rqWRviFGmo8PE87A_aIyJ3PzkNnRtMpZviisg5N1Gg_dOVaHUDdvk5WUGyfu4K9lcx9X1CERdrl9G9ySS5_zLRPu4oIxT3Vo0nQLhp0M-CqNYOSCiLvH0pVLpgGNw8art4aBEA69L3aUrSFIa846yY0ssrJWFffguoFn52DPfCtDPP5CoSaEafWKbKmtD2fVCxf-o36Pmy5J5gSp0QfQ23CgEcEFFMUwa4d4QDEl9hwC-lvO6UJdVAs2gJpRoli4OVzG7gIIOj4At6q7BgcD-YhrdBqkoGcmcdN_iTLgMWpBGcWkIw7aYBd7U_MquBZHvN0Kajk_TLxag_K0uwXDq47_4dXk6f346ePj5MPj6Tfie169O474wVpiTEYchQzWfRteufTYJYWf6TyWOf4Fl8uyag)
