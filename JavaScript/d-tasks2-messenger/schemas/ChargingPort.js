@@ -1,10 +1,10 @@
 ({
   Entity: {},
+  // TODO: How to request usage of UUID for primary key?
 
-  // TODO: How to describe default value?
-  available: { type: 'boolean' },
-  cost: 'number',
+  available: { type: '?boolean', default: true },
+  cost: 'double',
   type: 'PortType',
-  power: 'number',
-  station: 'ElectricCharger',
+  power: 'double',
+  station: { type: 'ElectricCharger', delete: 'cascade' },
 });

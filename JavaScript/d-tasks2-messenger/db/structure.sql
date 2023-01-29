@@ -44,13 +44,13 @@ ALTER TABLE "AreaAccount" ADD CONSTRAINT "fkAreaAccountArea" FOREIGN KEY ("areaI
 ALTER TABLE "AreaAccount" ADD CONSTRAINT "fkAreaAccountAccount" FOREIGN KEY ("accountId") REFERENCES "Account" ("accountId") ON DELETE CASCADE;
 
 CREATE TABLE "PortType" (
-  "portTypeId" bigint GENERATED ALWAYS AS IDENTITY,
+  "portTypeId" bigint generated always as identity,
   "socket" varchar(64) NOT NULL,
   "current" varchar(2) NOT NULL
 );
 
 ALTER TABLE "PortType" ADD CONSTRAINT "pkPortType" PRIMARY KEY ("portTypeId");
-CREATE UNIQUE INDEX "akPortTypeSocket" ON "PortType" ("socket", "current");
+CREATE UNIQUE INDEX "akPortTypeNaturalKey" ON "PortType" ("socket", "current");
 
 CREATE TABLE "Vehicle" (
   "vehicleId" uuid NOT NULL DEFAULT gen_random_uuid(),
@@ -68,7 +68,7 @@ CREATE TABLE "Client" (
   "accountId" bigint NOT NULL,
   "firstName" varchar NOT NULL,
   "lastName" varchar NOT NULL,
-  "phones" jsonb,
+  "phones" jsonb NOT NULL,
   "vehicleId" uuid NOT NULL
 );
 
@@ -80,7 +80,7 @@ CREATE TABLE "BillingSettings" (
   "billingSettingsId" uuid NOT NULL DEFAULT gen_random_uuid(),
   "clientId" uuid NOT NULL,
   "cardNo" varchar(19) NOT NULL,
-  "main" boolean DEFAULT FALSE
+  "main" boolean NULL DEFAULT false
 );
 
 ALTER TABLE "BillingSettings" ADD CONSTRAINT "pkBillingSettings" PRIMARY KEY ("billingSettingsId");
@@ -106,16 +106,16 @@ ALTER TABLE "ElectricCharger" ADD CONSTRAINT "fkElectricChargerParking" FOREIGN 
 
 CREATE TABLE "ChargingPort" (
   "chargingPortId" uuid NOT NULL DEFAULT gen_random_uuid(),
-  "portTypeId" bigint NOT NULL,
-  "available" boolean DEFAULT TRUE,
+  "available" boolean NULL DEFAULT true,
   "cost" double precision NOT NULL,
+  "typeId" uuid NOT NULL,
   "power" double precision NOT NULL,
-  "electricChargerId" uuid NOT NULL
+  "stationId" uuid NOT NULL
 );
 
 ALTER TABLE "ChargingPort" ADD CONSTRAINT "pkChargingPort" PRIMARY KEY ("chargingPortId");
-ALTER TABLE "ChargingPort" ADD CONSTRAINT "fkChargingPortElectricCharger" FOREIGN KEY ("electricChargerId") REFERENCES "ElectricCharger" ("electricChargerId") ON DELETE CASCADE;
-ALTER TABLE "ChargingPort" ADD CONSTRAINT "fkChargingPortPortType" FOREIGN KEY ("portTypeId") REFERENCES "PortType" ("portTypeId");
+ALTER TABLE "ChargingPort" ADD CONSTRAINT "fkChargingPortType" FOREIGN KEY ("typeId") REFERENCES "PortType" ("portTypeId");
+ALTER TABLE "ChargingPort" ADD CONSTRAINT "fkChargingPortStation" FOREIGN KEY ("stationId") REFERENCES "ElectricCharger" ("electricChargerId") ON DELETE CASCADE;
 
 CREATE TABLE "Message" (
   "messageId" bigint generated always as identity,
@@ -134,7 +134,7 @@ CREATE TABLE "Spot" (
   "floor" integer NOT NULL,
   "place" integer NOT NULL,
   "cost" double precision NOT NULL,
-  "available" boolean DEFAULT TRUE,
+  "available" boolean NULL DEFAULT true,
   "suitableFor" varchar(32)[] NOT NULL
 );
 
@@ -164,10 +164,10 @@ CREATE TABLE "Rent" (
   "spotId" uuid NOT NULL,
   "chargingPortId" uuid NOT NULL,
   "clientId" uuid NOT NULL,
-  "started" timestamptz NOT NULL,
-  "finished" timestamptz,
+  "started" timestamp with time zone NOT NULL,
+  "finished" timestamp with time zone NULL,
   "freezedCostRates" jsonb NOT NULL,
-  "totalPrice" double precision
+  "totalPrice" double precision NULL
 );
 
 ALTER TABLE "Rent" ADD CONSTRAINT "pkRent" PRIMARY KEY ("rentId");
@@ -180,7 +180,7 @@ CREATE TABLE "Payment" (
   "rentId" uuid NOT NULL,
   "billingSettingsId" uuid NOT NULL,
   "amount" double precision NOT NULL,
-  "when" timestamptz NOT NULL
+  "when" timestamp with time zone NOT NULL
 );
 
 ALTER TABLE "Payment" ADD CONSTRAINT "pkPayment" PRIMARY KEY ("paymentId");

@@ -1,9 +1,9 @@
 ({
   Entity: {},
+  // TODO: How to request usage of UUID for primary key?
 
   rent: 'Rent',
   billingSettings: 'BillingSettings',
-  amount: 'number',
-  // TODO: How to describe DateTime value?
-  when: { type: 'string' },
+  amount: 'double',
+  when: { type: 'datetime' },
 });

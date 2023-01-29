@@ -42,7 +42,7 @@ interface Client {
 interface BillingSettings {
   clientId: string;
   cardNo: string;
-  main: boolean;
+  main?: boolean;
   billingSettingsId?: string;
 }
 
@@ -55,15 +55,15 @@ interface Parking {
 
 interface ElectricCharger {
   model: string;
-  parkingId: string;
+  parkingId?: string;
   electricChargerId?: string;
 }
 
 interface ChargingPort {
-  available: boolean;
-  cost: number;
+  available?: boolean;
+  cost: string;
   typeId: string;
-  power: number;
+  power: string;
   stationId: string;
   chargingPortId?: string;
 }
@@ -79,8 +79,8 @@ interface Spot {
   parkingId: string;
   floor: number;
   place: number;
-  cost: number;
-  available: boolean;
+  cost: string;
+  available?: boolean;
   suitableFor: string;
   chargersId: string[];
   portsId: string[];
@@ -92,16 +92,16 @@ interface Rent {
   chargingPortId: string;
   clientId: string;
   started: string;
-  finished: string;
+  finished?: string;
   freezedCostRates: string;
-  totalPrice: number;
+  totalPrice?: string;
   rentId?: string;
 }
 
 interface Payment {
   rentId: string;
   billingSettingsId: string;
-  amount: number;
+  amount: string;
   when: string;
   paymentId?: string;
 }
