@@ -32,6 +32,14 @@ const executeFile = async (client, name) => {
 
 (async () => {
   await metasql.create(SCHEMAS_DIR, DB_DIR);
+  // Rename generated files
+  const databaseFile = path.join(DB_DIR, 'database.sql');
+  const structureFile = path.join(DB_DIR, 'structure.sql');
+  await fsp.rename(databaseFile, structureFile);
+  console.log('Generate typings domain.d.ts');
+  const typesFile = path.join(DB_DIR, 'database.d.ts');
+  const domainTypes = path.join(DB_DIR, 'domain.d.ts');
+  await fsp.rename(typesFile, domainTypes);
 
   console.log('Environment is ready');
 })().catch((err) => {

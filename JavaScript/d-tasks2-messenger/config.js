@@ -8,7 +8,7 @@
 const DB = {
   host: '127.0.0.1',
   port: 5432,
-  database: 'example',
+  database: 'messenger',
   user: 'marcus',
   password: 'marcus',
 };
