@@ -41,6 +41,31 @@ const executeFile = async (client, name) => {
   const domainTypes = path.join(DB_DIR, 'domain.d.ts');
   await fsp.rename(typesFile, domainTypes);
 
+  // (Re)Create database & user by executing `./db/install.sql` script
+  const inst = new pg.Client({
+    ...config.DB,
+    // Default PostgreSQL main user with permissions to DROP/CREATE database & user
+    database: 'postgres',
+    user: 'postgres',
+    password: 'postgres',
+  });
+  await inst.connect();
+  console.log('(Re)Create database & user');
+  await executeFile(inst, 'install.sql');
+  await inst.end();
+
+  // Setup database structure & seed it with data
+  const db = new pg.Client(config.DB);
+  await db.connect();
+  console.log('Instantiate database structure');
+  await executeFile(db, 'structure.sql');
+  // TODO: Update seed script to conform with current structure:
+  // seed script awaits UUID as primary key for a few entities
+  // but current structure uses BigInt identity
+  console.log('TODO: Database seeding');
+  // await executeFile(db, 'data.sql');
+  await db.end();
+
   console.log('Environment is ready');
 })().catch((err) => {
   console.error(err);
