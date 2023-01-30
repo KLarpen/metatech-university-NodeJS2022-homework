@@ -1,5 +1,7 @@
 ({
-  Entity: {},
+  Entity: {
+    note: 'Known charging port types descriptors',
+  },
 
   socket: { type: 'string', length: { max: 64 } },
   // Describe string enum types

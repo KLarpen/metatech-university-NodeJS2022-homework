@@ -4,6 +4,7 @@
   vehicleKindArray: {
     js: {
       array: {
+        // TODO: Can you reference one custom type as a type of items within other custom collection type?
         enum: [
           'bicycle',
           'scooter',

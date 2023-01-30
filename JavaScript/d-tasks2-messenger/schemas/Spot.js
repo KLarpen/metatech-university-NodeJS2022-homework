@@ -1,5 +1,7 @@
 ({
-  Entity: {},
+  Entity: {
+    note: 'A parking spot for single electric vehicle',
+  },
   // TODO: How to request usage of UUID for primary key?
 
   parking: { type: 'Parking', delete: 'cascade' },

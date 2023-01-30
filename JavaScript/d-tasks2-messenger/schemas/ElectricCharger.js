@@ -1,5 +1,7 @@
 ({
-  Entity: {},
+  Entity: {
+    note: 'An electric charger station for vehicles',
+  },
   // TODO: How to request usage of UUID for primary key?
 
   model: 'string',
