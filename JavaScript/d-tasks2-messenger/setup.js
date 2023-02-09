@@ -59,11 +59,8 @@ const executeFile = async (client, name) => {
   await db.connect();
   console.log('Instantiate database structure');
   await executeFile(db, 'structure.sql');
-  // TODO: Update seed script to conform with current structure:
-  // seed script awaits UUID as primary key for a few entities
-  // but current structure uses BigInt identity
-  console.log('TODO: Database seeding');
-  // await executeFile(db, 'data.sql');
+  console.log('Database seeding');
+  await executeFile(db, 'data.sql');
   await db.end();
 
   console.log('Environment is ready');
