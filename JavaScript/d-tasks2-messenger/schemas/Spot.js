@@ -23,12 +23,8 @@
   cost: 'double',
   available: { type: '?boolean', default: true },
   suitableFor: {
+    //Custom type to describe array of enumerable strings
     type: 'vehicleKindArray',
-    // TODO: How to describe array of enumerable strings?
-    // array: {
-    //   enum: ['bicycle', 'scooter', 'motorcycle', 'car', 'van', 'truck', 'bus'],
-    //   note: 'A kind of a vehicle',
-    // },
   },
   chargers: { many: 'ElectricCharger' },
   ports: { many: 'ChargingPort' },
