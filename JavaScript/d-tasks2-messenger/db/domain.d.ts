@@ -24,6 +24,7 @@ interface PortType {
 }
 
 interface Vehicle {
+  guid: string;
   model: string;
   kind: string;
   portTypeId: string;
@@ -31,6 +32,7 @@ interface Vehicle {
 }
 
 interface Client {
+  guid: string;
   accountId: string;
   firstName: string;
   lastName: string;
@@ -40,6 +42,7 @@ interface Client {
 }
 
 interface BillingSettings {
+  guid: string;
   clientId: string;
   cardNo: string;
   main?: boolean;
@@ -47,6 +50,7 @@ interface BillingSettings {
 }
 
 interface Parking {
+  guid: string;
   name: string;
   address: string;
   location: string;
@@ -54,12 +58,14 @@ interface Parking {
 }
 
 interface ElectricCharger {
+  guid: string;
   model: string;
   parkingId?: string;
   electricChargerId?: string;
 }
 
 interface ChargingPort {
+  guid: string;
   available?: boolean;
   cost: string;
   typeId: string;
@@ -76,6 +82,7 @@ interface Message {
 }
 
 interface Spot {
+  guid: string;
   parkingId: string;
   floor: number;
   place: number;
@@ -88,6 +95,7 @@ interface Spot {
 }
 
 interface Rent {
+  guid: string;
   spotId: string;
   chargingPortId: string;
   clientId: string;
@@ -99,6 +107,7 @@ interface Rent {
 }
 
 interface Payment {
+  guid: string;
   rentId: string;
   billingSettingsId: string;
   amount: string;
