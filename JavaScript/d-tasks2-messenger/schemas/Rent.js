@@ -22,20 +22,7 @@
   client: 'Client',
   started: { type: 'datetime' },
   finished: { type: '?datetime' },
-  // TODO: How to describe domain models that not entity to be stored as JSONB in DB?
-  /** JSON Schema example
-   * @example
-   * ```json
-    "freezedCostRates": {
-      "type": "object",
-      "properties": {
-        "spot": { "type": "number" },
-        "port": { "type": "number" }
-      },
-      "required": ["spot", "port"]
-    },
-    ```
-   */
-  freezedCostRates: 'json',
+  // Custom type to describe domain models that not entity to be stored as JSONB in DB
+  freezedCostRates: 'costRatesObject',
   totalPrice: '?double',
 });

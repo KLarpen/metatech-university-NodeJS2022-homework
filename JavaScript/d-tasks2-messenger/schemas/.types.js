@@ -72,4 +72,53 @@
       return null;
     },
   },
+  /**
+   * Custom type to describe domain model that not entity, described by own schema
+   * and must be stored as JSONB in DB
+   */
+  locationObject: {
+    js: { schema: 'Location' },
+    metadata: { pg: 'jsonb' },
+    construct() {},
+    checkType(source, path = '') {
+      return this.schema.check(source, path);
+    },
+  },
+  addressObject: {
+    js: { schema: 'Address' },
+    metadata: { pg: 'jsonb' },
+    construct() {},
+    checkType(source, path = '') {
+      return this.schema.check(source, path);
+    },
+  },
+  costRatesObject: {
+    js: { schema: 'AggregatedCostRates' },
+    metadata: { pg: 'jsonb' },
+    construct() {},
+    checkType(source, path = '') {
+      return this.schema.check(source, path);
+    },
+  },
+  /**
+   * Array of objects contains two string parameters: `type` & `value`.
+   * In case of usage in persistent entities will be stored as JSONB.
+   */
+  typedValueArray: {
+    js: {
+      array: { schema: 'TypedStringValue' },
+    },
+    metadata: { pg: 'jsonb' },
+    construct() {},
+    checkType(src, path) {
+      if (!Array.isArray(src)) {
+        return `Field "${path}" not a typedStringArray`;
+      }
+      for (const item of src) {
+        if (typeof item !== 'object' || typeof item.type !== 'string' || typeof item.value !== 'string' )
+          return `Field "${path}" contains item value that's not compatible with typedStringArray`;
+      }
+      return null;
+    },
+  },
 });

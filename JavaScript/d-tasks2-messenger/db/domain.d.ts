@@ -10,6 +10,18 @@ interface Account {
   accountId?: string;
 }
 
+interface Address {
+  country: string;
+  state?: string;
+  city: string;
+  streetAddress: string;
+}
+
+interface AggregatedCostRates {
+  spot: string;
+  port: string;
+}
+
 interface Area {
   name: string;
   ownerId: string;
@@ -74,6 +86,11 @@ interface ChargingPort {
   chargingPortId?: string;
 }
 
+interface Location {
+  latitude: number;
+  longitude: number;
+}
+
 interface Message {
   areaId: string;
   fromId: string;
@@ -121,4 +138,9 @@ interface Session {
   ip: string;
   data: string;
   sessionId?: string;
+}
+
+interface TypedStringValue {
+  type: string;
+  value: string;
 }
