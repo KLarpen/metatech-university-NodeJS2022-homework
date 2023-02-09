@@ -42,4 +42,34 @@
       return null;
     },
   },
+  /**
+   * Custom card number string type with validation pattern
+   * @example Related validation pattern in JSON schema
+  ```json
+  "pattern": "^([0-9]{4})-([0-9]{4})-([0-9]{4})-([0-9]{4})$"
+  ```
+  */
+  cardNumber: {
+    js: {
+      type: 'string',
+      length: { min: 16, max: 19 },
+    },
+    metadata: { pg: 'varchar(19)' },
+    construct() {},
+    checkType(src, path) {
+      if (typeof src !== 'string')
+        return `Field "${path}" not a cardNumber string (actual type "${typeof src}")`;
+      else {
+        const allowedChars = '0123456789';
+        const notice = `Field "${path}" contains value not in a cardNumber format`;
+        const filtered = src.replace('-', '');
+        if (src.length > 19 || filtered.length !== 16) return notice;
+        for (let i = 0; i < 16; i++) {
+          const char = filtered[i];
+          if (!allowedChars.includes(char)) return notice;
+        }
+      }
+      return null;
+    },
+  },
 });
