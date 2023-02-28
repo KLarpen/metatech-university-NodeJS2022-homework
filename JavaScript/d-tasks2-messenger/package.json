@@ -10,6 +10,9 @@
     "lint": "eslint . && prettier -c \"**/*.js\" \"**/*.ts\"",
     "fmt": "prettier --write \"**/*.js\" \"**/*.ts\""
   },
+  "prisma": {
+    "seed": "node db/seed.js"
+  },
   "engines": {
     "node": "16 || 18"
   },
