@@ -115,10 +115,12 @@ enum CurrentKind {
 
 model PortType {
   portTypeId   BigInt         @id @default(autoincrement())
-  socket       String         @unique @db.VarChar(64)
+  socket       String         @db.VarChar(64)
   current      CurrentKind
   stationPorts ChargingPort[]
   vehicles     Vehicle[]
+
+  @@unique(fields: [socket, current], name: "socketCurrentPair")
 }
 
 model ChargingPort {
