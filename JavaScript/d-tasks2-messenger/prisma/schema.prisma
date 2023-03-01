@@ -97,6 +97,8 @@ model Spot {
   chargers    ElectricCharger[]
   ports       ChargingPort[]
   rents       Rent[]
+
+  @@unique(fields: [parkingId, place], name: "parkingPlace")
 }
 
 model ElectricCharger {
