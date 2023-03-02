@@ -80,12 +80,13 @@ CREATE TABLE "Spot" (
   "parkingId" uuid NOT NULL,
   "floor" integer NOT NULL,
   "place" integer NOT NULL,
-  "cost" double precision NOT NULL,
+  "cost" numeric(10, 3) NOT NULL,
   "available" boolean DEFAULT TRUE,
   "suitableFor" varchar(32)[] NOT NULL
 );
 
 ALTER TABLE "Spot" ADD CONSTRAINT "pkSpot" PRIMARY KEY ("spotId");
+CREATE UNIQUE INDEX "akSpotParkingIdPlace" ON "Spot" ("parkingId", "place");
 ALTER TABLE "Spot" ADD CONSTRAINT "fkSpotParking" FOREIGN KEY ("parkingId") REFERENCES "Parking" ("parkingId") ON DELETE CASCADE;
 
 CREATE TABLE "ElectricCharger" (
@@ -120,7 +121,7 @@ CREATE TABLE "ChargingPort" (
   "chargingPortId" uuid NOT NULL DEFAULT gen_random_uuid(),
   "portTypeId" bigint NOT NULL,
   "available" boolean DEFAULT TRUE,
-  "cost" double precision NOT NULL,
+  "cost" numeric(10, 3) NOT NULL,
   "power" double precision NOT NULL,
   "electricChargerId" uuid NOT NULL
 );
@@ -180,7 +181,7 @@ CREATE TABLE "Rent" (
   "started" timestamptz NOT NULL,
   "finished" timestamptz,
   "freezedCostRates" jsonb NOT NULL,
-  "totalPrice" double precision
+  "totalPrice" numeric(10, 3)
 );
 
 ALTER TABLE "Rent" ADD CONSTRAINT "pkRent" PRIMARY KEY ("rentId");
@@ -192,7 +193,7 @@ CREATE TABLE "Payment" (
   "paymentId" uuid NOT NULL DEFAULT gen_random_uuid(),
   "rentId" uuid NOT NULL,
   "billingSettingsId" uuid NOT NULL,
-  "amount" double precision NOT NULL,
+  "amount" numeric(10, 3) NOT NULL,
   "when" timestamptz NOT NULL
 );
 
