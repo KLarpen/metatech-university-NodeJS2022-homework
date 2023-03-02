@@ -91,7 +91,7 @@ model Spot {
   parking     Parking           @relation(fields: [parkingId], references: [parkingId])
   floor       Int
   place       Int
-  cost        Float
+  cost        Decimal           @db.Decimal(10, 3)
   available   Boolean?          @default(true)
   suitableFor VehicleKind[]
   chargers    ElectricCharger[]
@@ -130,7 +130,7 @@ model ChargingPort {
   portTypeId        BigInt
   type              PortType        @relation(fields: [portTypeId], references: [portTypeId])
   available         Boolean?        @default(true)
-  cost              Float
+  cost              Decimal         @db.Decimal(10, 3)
   power             Float
   electricChargerId String          @db.Uuid
   station           ElectricCharger @relation(fields: [electricChargerId], references: [electricChargerId])
@@ -177,7 +177,7 @@ model Rent {
   started          DateTime     @db.Timestamptz()
   finished         DateTime?    @db.Timestamptz()
   freezedCostRates Json
-  totalPrice       Float?
+  totalPrice       Decimal?     @db.Decimal(10, 3)
   spot             Spot         @relation(fields: [spotId], references: [spotId])
   chargingPort     ChargingPort @relation(fields: [chargingPortId], references: [chargingPortId])
   client           Client       @relation(fields: [clientId], references: [clientId])
@@ -188,7 +188,7 @@ model Payment {
   paymentId         String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   rentId            String          @db.Uuid
   billingSettingsId String          @db.Uuid
-  amount            Float
+  amount            Decimal         @db.Decimal(10, 3)
   when              DateTime        @db.Timestamptz()
   rent              Rent            @relation(fields: [rentId], references: [rentId])
   payerRequisites   BillingSettings @relation(fields: [billingSettingsId], references: [billingSettingsId])
