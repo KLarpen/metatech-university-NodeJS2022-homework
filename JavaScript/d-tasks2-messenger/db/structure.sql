@@ -172,6 +172,7 @@ CREATE TABLE "SpotChargingPort" (
 ALTER TABLE "SpotChargingPort" ADD CONSTRAINT "pkSpotChargingPort" PRIMARY KEY ("spotId", "chargingPortId");
 ALTER TABLE "SpotChargingPort" ADD CONSTRAINT "fkSpotChargingPortSpot" FOREIGN KEY ("spotId") REFERENCES "Spot" ("spotId") ON DELETE CASCADE;
 ALTER TABLE "SpotChargingPort" ADD CONSTRAINT "fkSpotChargingPortChargingPort" FOREIGN KEY ("chargingPortId") REFERENCES "ChargingPort" ("chargingPortId") ON DELETE CASCADE;
+CREATE UNIQUE INDEX "akSpotNaturalKey" ON "Spot" ("parkingId", "place");
 
 CREATE TABLE "Rent" (
   "rentId" bigint generated always as identity,

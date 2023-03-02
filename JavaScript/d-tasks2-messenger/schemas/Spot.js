@@ -28,4 +28,7 @@
   },
   chargers: { many: 'ElectricCharger' },
   ports: { many: 'ChargingPort' },
+
+  // Define combined unique index
+  naturalKey: { unique: ['parking', 'place'] },
 });
