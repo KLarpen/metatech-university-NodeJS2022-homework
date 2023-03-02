@@ -343,6 +343,7 @@ async function main() {
   await prisma.rent.createMany({
     data: [
       {
+        rentId: '6541c5aa-e813-4f05-a68d-1932d880e30a',
         spotId: spots[3].spotId,
         chargingPortId: ports[2].chargingPortId,
         clientId: customerId,
@@ -352,6 +353,7 @@ async function main() {
         totalPrice: 165,
       },
       {
+        rentId: 'c9268e2a-6de0-4571-a3eb-022ed270c473',
         spotId: spots[0].spotId,
         chargingPortId: ports[1].chargingPortId,
         clientId: customerId,
@@ -362,26 +364,17 @@ async function main() {
     skipDuplicates: true,
   });
 
-  const finishedRent = await prisma.rent.findFirst({
-    where: {
-      spotId: spots[3].spotId,
-      chargingPortId: ports[2].chargingPortId,
-      finished: { not: { equals: null } },
+  await prisma.payment.upsert({
+    where: { paymentId: '1090d5d5-e0c2-4880-9556-636270d7d6c8' },
+    update: {},
+    create: {
+      paymentId: '1090d5d5-e0c2-4880-9556-636270d7d6c8',
+      rentId: '6541c5aa-e813-4f05-a68d-1932d880e30a',
+      billingSettingsId,
+      amount: 165,
+      when: '2023-01-12T18:36:00.000Z',
     },
   });
-  if (finishedRent) {
-    await prisma.payment.upsert({
-      where: { paymentId: '1090d5d5-e0c2-4880-9556-636270d7d6c8' },
-      update: {},
-      create: {
-        paymentId: '1090d5d5-e0c2-4880-9556-636270d7d6c8',
-        rentId: finishedRent.rentId,
-        billingSettingsId,
-        amount: 165,
-        when: '2023-01-12T18:36:00.000Z',
-      },
-    });
-  }
 
   // console.dir({
   //   ev,
