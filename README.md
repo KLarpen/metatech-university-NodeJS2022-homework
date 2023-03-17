@@ -14,5 +14,6 @@ Next task was to split application layers into separate repositories: for system
 #### Result you may find in repositories:
 - [metatech-university-NodeJS2023-SystemLayer-Pure](https://github.com/KLarpen/metatech-university-NodeJS2023-SystemLayer-Pure)
 - [metatech-university-NodeJS2023-Application-metaschema](https://github.com/KLarpen/metatech-university-NodeJS2023-Application-metaschema) (based on `metaschema` branch of the current repository)
+- [metatech-university-NodeJS2023-Application-prisma](https://github.com/KLarpen/metatech-university-NodeJS2023-Application-prisma) (based on `prisma` branch of the current repository)
 
 All following tasks will be done in the aforementioned repositories.
